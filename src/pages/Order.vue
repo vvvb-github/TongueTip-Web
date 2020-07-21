@@ -1,10 +1,11 @@
 <template>
-    <div style="width: 100%;height: 100%">
-        <background :show-head="true">
+    <div class="container">
+        <background style="width: 45%;height: 100%" :show-head="true">
             <el-card class="box-card" style="width:80%;height:600px">
                 <el-container style="height: 600px">
                     <el-main>
-                        <el-tabs v-model="activeName" @tab-click="handleClick" style="background: rgba(255,255,255,0.7)">
+                        <el-tabs v-model="activeName" @tab-click="handleClick">
+
                             <el-tab-pane label="已支付" name="first">
                                 <el-table
                                         ref="multipleTable"
@@ -13,17 +14,18 @@
                                         tooltip-effect="dark"
                                         style="width: 100%;height:430px"
                                         @selection-change="handleSelectionChange"
-                                >
-                                    <el-table-column prop="date" label="订单列表" width="800px">
+                                        >
+                                    <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
                                                      v-for="item in cusOrder" :key="item.orderId">
                                             <el-collapse-item title=" 订单详情" name="1">
                                                 <el-card :body-style="{ padding: '20px',display:'flex'}"
                                                 >
+
                                                     <el-card style="width:200px;height:200px" >
-                                                        <img :src="item.image" class="image">
+                                                        <img src="item.image" class="image">
                                                     </el-card>
-                                                    <el-card style="height:200px;width: 600px" :body-style="{display:'flex',justify:'space-between'}" >
+                                                    <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
                                                         <div style="margin-left: 0px">
                                                             <div style="margin-top: 0px">{{item.dishName}}</div>
                                                             <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
@@ -55,7 +57,7 @@
                                         height="480"
                                         style="width: 100%;height:430px"
                                         @selection-change="handleSelectionChange">
-                                    <el-table-column prop="date" label="订单列表" width="800px">
+                                    <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
                                                      v-for="item in cusOrderNotPay" :key="item.orderId">
                                             <el-collapse-item title=" 订单详情" name="1">
@@ -63,7 +65,7 @@
                                                     <el-card style="width:200px;height:200px" >
                                                         <img src="item.image" class="image">
                                                     </el-card>
-                                                    <el-card style="height:200px;width: 600px" :body-style="{display:'flex',justify:'space-between'}" >
+                                                    <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
                                                         <div style="margin-left: 0px">
                                                             <div style="margin-top: 0px">{{item.dishName}}</div>
                                                             <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
@@ -71,12 +73,12 @@
                                                         </div>
                                                         <div style="margin-left:230px">
                                                             <el-button style="margin-top: 133px" type="primary" class="button clearfix"
-                                                                       @click="funcDel()">取消订单</el-button>
+                                                            @click="funcDel()">取消订单</el-button>
                                                         </div>
                                                         <div style="margin-left: 20px">
                                                             <div style="margin-top: 0px" class="time">{{item.Date}}</div>
                                                             <el-button style="margin-top: 110px" type="primary" class="button clearfix"
-                                                                       @click="funcPay">支付</el-button>
+                                                            @click="funcPay">支付</el-button>
                                                         </div>
 
                                                     </el-card>
@@ -108,7 +110,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="changeInfo">确 定</el-button>
+                <el-button type="primary" @click="changeInfo()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -117,22 +119,25 @@
 <script>
     import Background from "@/components/background";
     import JS from "@/JS";
-
     export default {
         name: "Order",
         components:{ Background},
         data() {
             return {
-                tableData: [],
+                tableData: [{}],
                 multipleSelection: [],
                 activeName: 'second',
+                //Date: '订单时间',
                 activeNames: ['1'],
+                //dishName:'汉堡',
+                //number:'2',
+                //prices:'128',
                 dialogVisible: false,
                 formLabelWidth: '120px',
                 comment: {
                     com: '',
                     star: 3,
-                    Oid: 0,
+                    Oid:'0',
                 },
                 rules: {
                     com: [
@@ -142,15 +147,17 @@
                     star:[]
                 },
                 colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+
                 cusOrder:[
                     {
+
                         Date:'07/20/20:39',
                         dishName:'汉堡',
                         number:'2',
                         prices:'128',
                         DishId:'',
                         orderId:'0001',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        image:' ',
                     },
                     {
                         Date:'07/20/19:56',
@@ -159,7 +166,7 @@
                         prices:'13',
                         DishId:'',
                         orderId:'0002',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        image:' ',
                     },
                     {
                         Date:'07/20/20:00',
@@ -168,18 +175,21 @@
                         prices:'498',
                         DishId:'',
                         orderId:'0003',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        image:' ',
                     },
+
                 ],
+
                 cusOrderNotPay:[
                     {
+
                         Date:'07/20/19:54',
                         dishName:'汉堡',
                         number:'2',
                         prices:'128',
                         DishId:'',
                         orderId:'0001',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        image:' ',
                     },
                     {
                         Date:'07/20/19:56',
@@ -187,8 +197,7 @@
                         number:'5',
                         prices:'13',
                         DishId:'',
-                        orderId:'0002',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        orderId:'0002',image:' ',
                     },
                     {
                         Date:'07/20/20:00',
@@ -197,28 +206,35 @@
                         prices:'498',
                         DishId:'',
                         orderId:'0003',
-                        image: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1694681277,1453280371&fm=26&gp=0.jpg'
+                        image:' ',
                     },
+
                 ]
+
             }
         },
         methods: {
-            // toggleSelection(rows) {
-            //     if (rows) {
-            //         rows.forEach(row => {
-            //             this.$refs.multipleTable.toggleRowSelection(row);
-            //         });
-            //     } else {
-            //         this.$refs.multipleTable.clearSelection();
-            //     }
-            // },
+            //toggleSelection(rows) {
+            //    if (rows) {
+            //        rows.forEach(row => {
+            //            this.$refs.multipleTable.toggleRowSelection(row);
+            //        });
+            //    } else {
+            //        this.$refs.multipleTable.clearSelection();
+            //    }
+            //},
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
+            //checkAll()
+            //{
+
+            //},
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-            handleChange(val) {
+            handleChange(val)
+            {
                 console.log(val) ;
             },
             changeInfo() {
@@ -232,25 +248,37 @@
                         return false;
                     }
                 });
+
+
             },
             fucA(OrderId){
                 this.dialogVisible=true;
                 this.comment.Oid=OrderId;
             },
             funcDel(OrderId){
-                JS.order.deleteOrder(this,OrderId)
+                this.comment.Oid=OrderId;
             },
             funcPay(OrderId){
-                JS.order.pay(this,OrderId)
+                this.comment.Oid=OrderId;
             }
-        }
+
+    }
     }
 </script>
 
 <style scoped>
+    .container{
+        width: 100%;
+        height: 100%;
+    }
+
     .time {
         font-size: 13px;
         color: #999;
+    }
+
+    .button {
+
     }
 
     .image {
@@ -267,5 +295,7 @@
     .clearfix:after {
         clear: both
     }
+
+
 
 </style>

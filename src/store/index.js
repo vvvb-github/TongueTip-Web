@@ -6,78 +6,106 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state:{
         loading: null,
+        imgUrl: 'http://192.168.0.110:8081/admin/image',
         userInfo: {
-            m_userID: 0,
-            m_userName: '',
-            m_userPhone: '',
-            m_userType: 0,
-            m_userPriority: 0,
-            m_iconPath: ''
+            userID: 0,
+            userName: '',
+            userPhone: '',
+            userType: 0,
+            userPriority: 0,
+            iconPath: ''
         },
         hostInfo: {
-            m_hostID: 0,
-            m_hostName: '',
-            m_phone: '',
-            m_location: '',
-            m_star: 0,
-            m_picPath: '',
-            m_introduction: '',
+            hostID: 0,
+            hostName: '',
+            phone: '',
+            location: '',
+            star: 0,
+            picPath: '',
+            introduction: ''
         },
         dishInfo: {
-            m_dishID: 0,
+            dishID: 0,
+            picPathList:[],
+            dishName:'',
+            price:0,
+            sales:0,
+            star:0,
+            tags:[]
         },
+        orderInfo: []
     },
     mutations:{
-        setUser(state,payload){
-            state.userInfo = payload
-        },
         setUserID(state,payload){
-            state.userInfo.m_userID = payload
+            state.userInfo.userID = payload
         },
         setUserName(state,payload){
-            state.userInfo.m_userName = payload
+            state.userInfo.userName = payload
         },
         setUserPhone(state,payload){
-            state.userInfo.m_userPhone = payload
+            state.userInfo.userPhone = payload
         },
         setUserType(state,payload){
-            state.userInfo.m_userType = payload
+            state.userInfo.userType = payload
         },
         setUserPriority(state,payload){
-            state.userInfo.m_userPriority = payload
+            state.userInfo.userPriority = payload
         },
         setUserIcon(state,payload){
-            state.userInfo.m_iconPath = payload
-        },
-        setHost(state,payload){
-            state.hostInfo = payload
+            state.userInfo.iconPath = payload
         },
         setHostID(state,payload){
-            state.hostInfo.m_hostID = payload
+            state.hostInfo.hostID = payload
         },
         setHostName(state,payload){
-            state.hostInfo.m_hostName = payload
+            state.hostInfo.hostName = payload
         },
         setHostPhone(state,payload){
-            state.hostInfo.m_phone = payload
+            state.hostInfo.phone = payload
         },
         setHostLocation(state,payload){
-            state.hostInfo.m_location = payload
+            state.hostInfo.location = payload
         },
         setHostStar(state,payload){
-            state.hostInfo.m_star = payload
+            state.hostInfo.star = payload
         },
         setHostIcon(state,payload){
-            state.hostInfo.m_picPath = payload
+            state.hostInfo.picPath = payload
         },
         setHostIntroduction(state,payload){
-            state.hostInfo.m_introduction = payload
-        },
-        setDish(state,payload){
-            state.dishInfo = payload
+            state.hostInfo.introduction = payload
         },
         setDishID(state,payload){
-            state.dishInfo.m_dishID = payload
+            state.dishInfo.dishID = payload
+        },
+        setImgList(state,payload){
+            state.dishInfo.picPathList = payload
+        },
+        setDishName(state,payload){
+            state.dishInfo.dishName = payload
+        },
+        setDishPrice(state,payload){
+            state.dishInfo.price = payload
+        },
+        setDishSales(state,payload){
+            state.dishInfo.sales = payload
+        },
+        setDishStar(state,payload){
+            state.dishInfo.star = payload
+        },
+        setDishTagList(state,payload){
+            state.dishInfo.tags = payload
+        },
+        addOrder(state,payload){
+            state.orderInfo.push(payload)
+        },
+        deleteOrder(state,payload){
+            for (let i=0;i<state.orderInfo.length;i++) {
+                if (state.orderInfo[i].orderID === payload) {
+                    state.orderInfo.splice(i, 1);
+                    break;
+                }
+            }
         }
     }
 })

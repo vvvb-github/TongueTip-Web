@@ -7,8 +7,8 @@
             </div>
             <ul style="overflow: auto;width: 680px;height: 500px">
                 <el-card :body-style="bodyStyle" style="width: 650px;height: 320px;margin-top: 5px" shadow="hover"
-                         v-for="(item,index) in checkList" :key="item.m_checkID">
-                    <img :src="item.m_picPath" style="width: 300px;height: 260px;object-fit: fill"/>
+                         v-for="(item,index) in checkList" :key="item.checkID">
+                    <img :src="item.picPath" style="width: 300px;height: 260px;object-fit: fill"/>
                     <div style="width: 300px;height: 260px;display: flex;flex-direction: column;align-items: center;justify-content: center">
                         <el-button class="btn" type="success" @click="accept(index)">通过</el-button>
                         <el-button class="btn" type="danger" @click="reject(index)">拒绝</el-button>
@@ -38,6 +38,12 @@
             }
         },
         created() {
+            this.$store.state.loading = this.$loading({
+                lock: true,
+                text: '拼命加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             JS.admin.mounted(this)
         },
         methods: {

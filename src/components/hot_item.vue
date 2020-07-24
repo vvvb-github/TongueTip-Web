@@ -1,11 +1,11 @@
 <template>
     <div id="container-hot" @click="go" style="cursor: pointer">
         <div id="hot-img">
-            <img style="width: 100%;height: 100%;object-fit:fill" :src="hotInfo.m_picPath"/>
+            <img style="width: 100%;height: 100%;object-fit:fill" :src="hotInfo.picPath"/>
         </div>
         <div id="hot-info">
-            <el-button type="text" id="name">{{hotInfo.m_dishName}}</el-button>
-            <span id="location">{{hotInfo.m_location}}</span>
+            <el-button type="text" id="name">{{hotInfo.dishName}}</el-button>
+            <span id="location">{{hotInfo.location}}</span>
         </div>
     </div>
 </template>
@@ -25,7 +25,7 @@
         },
         methods: {
             go() {
-                this.$store.commit('setDishID',this.hotInfo.m_dishID)
+                this.$store.commit('setDishID',this.hotInfo.dishID)
                 JS.home.goDish(this)
             }
         }

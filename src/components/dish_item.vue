@@ -1,23 +1,23 @@
 <template>
     <div class="container-dish" @click="goDetail" style="cursor: pointer">
         <div style="height: 100%;width: 20%;">
-            <img :src="dishInfo.m_picPath" style="width: 150px;height: 130px;object-fit: fill"/>
+            <img :src="dishInfo.picPath" style="width: 150px;height: 130px;object-fit: fill"/>
         </div>
         <div style="height: 100%;width: 20%;margin-left: 5%;display: flex;flex-direction: column;justify-content: center;align-items: flex-start">
-            <el-button type="text" class="el-button-dish-name">{{dishInfo.m_dishName}}</el-button>
+            <el-button type="text" class="el-button-dish-name">{{dishInfo.dishName}}</el-button>
             <el-rate
-                    v-model="dishInfo.m_star"
+                    v-model="dishInfo.star"
                     disabled
                     show-score
                     text-color="#ff9900"
                     score-template="{value}"
                     id="stars">
             </el-rate>
-            <span class="span-price">￥ {{dishInfo.m_price}}</span>
+            <span class="span-price">￥ {{dishInfo.price}}</span>
         </div>
         <div style="width: 40%;height: 90%;margin-left: 5%">
             <el-tag type="warning" class="dish-tags" :style="{color: colors[Math.floor(Math.random()*5)]}"
-                    v-for="text in dishInfo.m_tags" :key="text">{{text}}</el-tag>
+                    v-for="text in dishInfo.tags.split('+')" :key="text">{{text}}</el-tag>
         </div>
 <!--        <div style="width: 20%;height: 100%;display: flex;justify-content: center;align-items: center">-->
 <!--            <el-button style="background-color: orangered;">下单</el-button>-->
@@ -41,7 +41,7 @@
         },
         methods: {
             goDetail() {
-                this.$store.commit('setDishID',this.dishInfo.m_dishID)
+                this.$store.commit('setDishID',this.dishInfo.dishID)
                 this.$router.replace('detail')
             }
         }

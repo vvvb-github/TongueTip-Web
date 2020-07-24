@@ -1,88 +1,102 @@
 import axios from "axios";
+import Qs from 'qs';
 
 export default {
-    login(vue,phone,pass,type) {
-        // 用户按下登录
-        // 请求，拿数据，如果是商家用户，额外拿一个店铺信息，记得存进Vuex
-        var userinfo ={
-            "phone":phone,
-            "password":pass,
-            "type":type
+    login(vue,phone,pass,type) {//@API 1
+        if(phone === '00000000000' && pass === 'admin123456@'){
+            vue.$router.replace('admin')
+            return
         }
-        axios
-            .get(vue.SERVICE_PATH+"login.json",userinfo)
-            .then(function(response)
-            {
-                var status = response["data"]["status"];
-                var userID = response["data"]["userID"];
-                var userName = response["data"]["userName"];
-                var userPriority = response["data"]["userPriority"];
-                var iconPath = response["data"]["iconPath"];
-                vue.$store.commit('setUserID',userID);
-                vue.$store.commit('setUserName',userName);
-                vue.$store.commit('setUserPriority',userPriority);
-                vue.$store.commit('setUserIcon',iconPath);
-                vue.$store.commit('setUserPhone',phone);
-                vue.$store.commit('setUserType',type);
-                if (type==2)
-                    axios
-                        .get(vue.SERVICE_PATH+"host.json",userID)
-                        .then(function(response)
-                        {
-                            var hostID = response["data"]["hostID"];
-                            var hostName = response["data"]["hostName"];
-                            var hostPhone = response["data"]["hostPhone"];
-                            var location = response["data"]["location"];
-                            var star = response["data"]["star"];
-                            var picPath = response["data"]["picPath"];
-                            var introduction = response["data"]["introduction"];
-                            vue.$store.commit('setHostID',hostID);
-                            vue.$store.commit('setHostName',hostName);
-                            vue.$store.commit('setHostPhone',hostPhone);
-                            vue.$store.commit('setHostLocation',location);
-                            vue.$store.commit('setHostStar',star);
-                            vue.$store.commit('setHostIcon',picPath);
-                            vue.$store.commit('setHostIntroduction',introduction);
-
+        let data = {
+            userPhone: phone,
+            userPassword: pass,
+            userType: type
+        }
+        // let data = new URLSearchParams()
+        // data.append('userPhone',phone)
+        // data.append('userPassword',pass)
+        // data.append('userType',type)
+        axios.post(vue.SERVICE_PATH+'/profile/login',Qs.stringify(data))
+            .then(res=>{
+                console.log(res)
+                let data = res.data
+                if(data.status === 0){
+                    vue.$message.warning('手机号或密码错误！')
+                }else{
+                    vue.$store.commit('setUserID',data.userID)
+                    vue.$store.commit('setUserName',data.userName)
+                    vue.$store.commit('setUserPhone',phone)
+                    vue.$store.commit('setUserType',type)
+                    vue.$store.commit('setUserPriority',data.userPriority)
+                    vue.$store.commit('setUserIcon',data.iconPath)
+                    if(type == 1){
+                        vue.$message.success('登陆成功！')
+                        vue.$router.replace('home')
+                    }else{
+                        axios.get(vue.SERVICE_PATH+'/home/hostbyuser',{
+                            params:{
+                                userID: vue.$store.state.userInfo.userID
+                            }
+                        }).then(res=>{
+                            let data = res
+                            if(data.status===0){
+                                vue.$message.error('获取商家信息失败！')
+                                vue.$router.replace('dishes')
+                            }else{
+                                vue.$store.commit('setHostID',data.hostID)
+                                vue.$store.commit('setHostName',data.hostName)
+                                vue.$store.commit('setHostPhone',data.hostPhone)
+                                vue.$store.commit('setHostLocation',data.location)
+                                vue.$store.commit('setHostStar',data.star)
+                                vue.$store.commit('setHostIntroduction',data.introduction)
+                                vue.$store.commit('setHostIcon',data.picPath)
+                                vue.$message.success('登陆成功！')
+                                vue.$router.replace('dishes')
+                            }
+                        }).catch(err=>{
+                            console.log(err)
+                            vue.$message.error('服务器错误！')
                         })
-                        .catch(function(err)
-                        {
-                            console.log(err);
-                        });
-                vue.getRequest(status);
-            })
-            .catch(function(err)
-            {
-                console.log(err);
-            });
-    },
-    editUserInfo(vue,newInfo) {
-        // newInfo: {
-        //     m_userName: '',
-        //     m_userPhone: '',
-        //     m_userPassword: ',
-        //     m_picPath: '' 允许空
-        // },
-        axios
-            .get(vue.SERVICE_PATH+"status.json",newInfo)
-            .then(function(response)
-            {
-                var status = response["data"]["status"];
-                if (status==1)
-                {
-                    vue.$store.commit('setUserName',newInfo.m_userName);
-                    vue.$store.commit('setUserPhone',newInfo.m_userPhone);
-                    if (newInfo.m_picPath!="")
-                        vue.$store.commit('setUserIcon',newInfo.m_picPath);
+                    }
                 }
-                vue.getRequest(status);
             })
-            .catch(function(err)
-            {
-                console.log(err);
-            });
+            .catch(err=>{
+                console.log(err)
+                vue.$message.error('服务器错误！')
+            })
     },
-    register(vue,form) {
+    editUserInfo(vue,newInfo) {//@API 3
+        // newInfo: {
+        //     userName: '',
+        //     userPhone: '',
+        //     userPassword: ',
+        //     picPath: '' 允许空
+        // },
+        let data = {
+            userID: vue.$store.state.userInfo.userID,
+            userName: newInfo.userName,
+            userPhone: newInfo.userPhone,
+            userPassword: newInfo.userPassword,
+            picPath: newInfo.picPath
+        }
+        axios.post(vue.SERVICE_PATH+'/profile/edit',Qs.stringify(data))
+            .then(res=>{
+                if(res.data.status === 0){
+                    vue.$message.error('服务器错误！')
+                }else{
+                    vue.$message.success('修改成功！')
+                    vue.$store.commit('setUserIcon',newInfo.picPath)
+                    vue.$store.commit('setUserName',newInfo.userName)
+                    vue.$store.commit('setUserPhone',newInfo.userPhone)
+                    vue.inEditing = false
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+                vue.$message.error('服务器错误！')
+            })
+    },
+    register(vue,form) {//@API 2
         // form: {
         //     userType: 1,0表示注册未审核
         //     userName: '',
@@ -91,24 +105,29 @@ export default {
         //     repeatPassword: '',
         //     picPath:''
         // }
-        axios
-            .get(vue.SERVICE_PATH+"register.json",form)
-            .then(function(response)
-            {
-                var User_ID=response["data"]["User_ID"];
-                console.log(User_ID);
-                if (form.userType==2)
-                    form.userType=0;
-                vue.$store.commit('setUserID',User_ID);
-                vue.$store.commit('setUserType',form.userType);
-                vue.$store.commit('setUserName',form.userName);
-                vue.$store.commit('setUserPhone',form.userPhone);
-                vue.$store.commit('setUserPriority',0);
-                vue.getRequest(0);
+        axios.post(vue.SERVICE_PATH+'/profile/register',Qs.stringify(form))
+            .then(res=>{
+                let data = res.data
+                if(data.status == 0){
+                    vue.$message.error('服务器错误！')
+                }else{
+                    if(form.userType == 2){
+                        vue.$message.success('注册成功！请等待管理员审核')
+                        vue.$router.replace('/')
+                    }else{
+                        vue.$message.error('注册成功！')
+                        vue.$store.commit('setUserID',data.userID)
+                        vue.$store.commit('setUserName',form.userName)
+                        vue.$store.commit('setUserPhone',form.userPhone)
+                        vue.$store.commit('setUserType',form.userType)
+                        vue.$store.commit('setUserPriority',data.userPriority)
+                        vue.$store.commit('setUserIcon',data.iconPath)
+                    }
+                }
             })
-            .catch(function(err)
-            {
-                console.log(err);
-            });
+            .catch(err=>{
+                console.log(err)
+                vue.$message.error('服务器错误！')
+            })
     }
 }

@@ -1,20 +1,20 @@
 <template>
     <div class="container-dish" @click="goDish" style="cursor: pointer">
         <div id="pic-dish">
-            <img id="pic" :src="hostInfo.m_picPath"/>
+            <img id="pic" :src="hostInfo.picPath"/>
         </div>
         <div id="info-dish">
-            <el-button type="text" id="name">{{hostInfo.m_hostName}}</el-button>
+            <el-button type="text" id="name">{{hostInfo.hostName}}</el-button>
             <el-rate
-                    v-model="hostInfo.m_star"
+                    v-model="hostInfo.star"
                     disabled
                     show-score
                     text-color="#ff9900"
                     score-template="{value}"
                     id="stars">
             </el-rate>
-            <span id="location">位置：{{hostInfo.m_location}}</span>
-            <span id="phone">联系方式：{{hostInfo.m_phoneNumber}}</span>
+            <span id="location">位置：{{hostInfo.location}}</span>
+            <span id="phone">联系方式：{{hostInfo.phone}}</span>
         </div>
     </div>
 </template>
@@ -32,7 +32,7 @@
         },
         methods: {
             goDish() {
-                this.$store.commit('setHost',this.hostInfo)
+                this.$store.commit('setHostID',this.hostInfo.hostID)
                 this.$router.replace('dishes')
             }
         }

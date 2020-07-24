@@ -71,15 +71,6 @@
                 this.error_phone = ''
                 this.error_pass = ''
             },
-            getRequest(requestID) {
-                if(requestID == 1){
-                    let url = (this.$store.state.userInfo.m_userType==1? 'home':'dishes')
-                    this.$message.success('登陆成功！')
-                    this.$router.replace(url)
-                }else{
-                    this.$message.error('用户名或密码错误！')
-                }
-            }
         },
     }
 </script>

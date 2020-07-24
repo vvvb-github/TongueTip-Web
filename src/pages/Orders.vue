@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-        <background :show-head="true" class="container-bg">
+        <background show-head="true" class="container-bg">
             <el-card class="infinite-list-wrapper"
                      :body-style="{width:'1200px',display:'flex',flexDirection:'column',alignItems:'center'}">
                 <ul class="list" :infinite-scroll-disabled="false">
-                    <div v-for="item in hostorders" class="list-item" :key="item.m_orderID">
+                    <div v-for="item in hostOrders" class="list-item" :key="item.orderID">
                         <el-card class="ordercard">
                             <order_item class="orderitem" :info="item"/>
                         </el-card>
@@ -27,12 +27,18 @@
         },
         data(){
             return{
-                hostorders:[],
+                hostOrders:[],
             }
         },
         methods: {
         },
         created() {
+            this.$store.state.loading = this.$loading({
+                lock: true,
+                text: '拼命加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             JS.orders.mounted(this);
         }
     }

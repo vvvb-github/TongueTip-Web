@@ -4,18 +4,18 @@
             <el-card :body-style="{height: '100%',display: 'flex',flexDirection: 'column',alignItems: 'center'}"
                      style="width: 40%;height: 92%;background: rgba(255,255,255,0.7)" shadow="hover">
                 <div style="width: 90%;height: 65%">
-                    <img :src="this.$store.state.userInfo.m_iconPath" style="width: 350px;height: 400px;object-fit: cover"/>
+                    <img :src="this.$store.state.userInfo.iconPath" style="width: 350px;height: 400px;object-fit: cover"/>
                 </div>
                 <div style="width: 90%;height: 30%;display: flex;justify-content: center;align-items: center">
-                    <span style="color: rebeccapurple;font-size: xx-large;font-family: 'Microsoft YaHei'">{{this.$store.state.userInfo.m_userName}}</span>
+                    <span style="color: rebeccapurple;font-size: xx-large;font-family: 'Microsoft YaHei'">{{this.$store.state.userInfo.userName}}</span>
                 </div>
             </el-card>
             <el-card :body-style="info_style" style="width: 40%;height: 92%;background: rgba(255,255,255,0.7)" shadow="hover">
                 <div class="div-info" v-if="!inEditing">
                     <el-button icon="el-icon-edit" style="background-color: orangered;margin-bottom: 5%"
                                @click="inEditing=true">编辑</el-button>
-                    <span class="info-item">手机号：{{this.$store.state.userInfo.m_userPhone}}</span><br>
-                    <span class="info-item">身份：{{this.$store.state.userInfo.m_userType==1? '顾客':'商家'}}</span>
+                    <span class="info-item">手机号：{{this.$store.state.userInfo.userPhone}}</span><br>
+                    <span class="info-item">身份：{{this.$store.state.userInfo.userType==1? '顾客':'商家'}}</span>
                     <div style="width: 90%;height: 70%;margin-top: 5%;">
                     </div>
                 </div>
@@ -25,17 +25,17 @@
                         <el-button icon="el-icon-delete" type="danger" circle @click="inEditing=false;"></el-button>
                     </div>
                     <el-form :model="editInfo" ref="editInfo" :rules="rules">
-                        <el-form-item class="edit-item" prop="m_userName">
-                            <el-input placeholder="请输入昵称" v-model="editInfo.m_userName"></el-input>
+                        <el-form-item class="edit-item" prop="userName">
+                            <el-input placeholder="请输入昵称" v-model="editInfo.userName"></el-input>
                         </el-form-item>
-                        <el-form-item class="edit-item" prop="m_userPhone">
-                            <el-input placeholder="请输入手机号" v-model="editInfo.m_userPhone" maxlength="11"></el-input>
+                        <el-form-item class="edit-item" prop="userPhone">
+                            <el-input placeholder="请输入手机号" v-model="editInfo.userPhone" maxlength="11"></el-input>
                         </el-form-item>
-                        <el-form-item class="edit-item" prop="m_userPassword">
-                            <el-input placeholder="请设置密码" v-model="editInfo.m_userPassword" show-password maxlength="20"></el-input>
+                        <el-form-item class="edit-item" prop="userPassword">
+                            <el-input placeholder="请设置密码" v-model="editInfo.userPassword" show-password maxlength="20"></el-input>
                         </el-form-item>
                         <el-form-item class="edit-item">
-                            <el-upload action="" :auto-upload="false" :limit="1" ref="upload-add-avatar"
+                            <el-upload :action="this.$store.state.imgUrl" :auto-upload="false" :limit="1" ref="upload-add-avatar"
                                        :on-exceed="handleExceed" :before-upload="handleBefore"
                             :on-success="handleSuccess" :on-error="handleError">
                                 <el-button size="small" type="primary">点击上传头像</el-button>
@@ -68,21 +68,21 @@
                 },
                 inEditing: false,
                 editInfo: {
-                    m_userName: '',
-                    m_userPhone: '',
-                    m_userPassword: '',
-                    m_picPath: ''
+                    userName: '',
+                    userPhone: '',
+                    userPassword: '',
+                    picPath: ''
                 },
                 rules: {
-                    m_userName: [
+                    userName: [
                         { required: true, message: '请输入昵称', trigger: 'blur' },
                         { min: 1, max: 20, message: '长度在1到20个字符', trigger: 'blur' }
                     ],
-                    m_userPhone: [
+                    userPhone: [
                         { required: true, message: '请输入手机号', trigger: 'blur' },
                         { min: 11, max: 11, message: '请输入正确手机号', trigger: 'blur' }
                     ],
-                    m_userPassword: [
+                    userPassword: [
                         { required: true, message: '请输入密码', trigger: 'blur' },
                         { min: 6, max: 20, message: '密码长度必须在6到20', trigger: 'blur' }
                     ],
@@ -93,22 +93,17 @@
             edit_info() {
                 this.$refs['editInfo'].validate((valid) => {
                     if (valid) {
-                        // this.$refs['upload-add-avatar'].submit()
-                        JS.profile.editUserInfo(this,this.editInfo)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        if(this.$refs['upload-add-avatar'].$children[0].fileList.length > 0) {
+                            this.$refs['upload-add-avatar'].submit()
+                        }else {
+                            JS.profile.editUserInfo(this, this.editInfo)
+                        }
                     }
                     else {
                         this.$message.error('提交出错！')
                         return false;
                     }
                 });
-            },
-            getRequest(ID) {
-                if(ID == 1){
-                    this.$message.success('修改成功！')
-                    this.inEditing = false
-                }else{
-                    this.$message.error('修改失败！')
-                }
             },
             handleExceed() {
                 this.$message.error('只能上传1张图片！')
@@ -128,12 +123,13 @@
             },
             handleSuccess(res){
                 if(res.status == 200){
-                    this.editInfo.picPath = res.data.imgUrl
+                    this.editInfo.picPath = res.data.url
+                    JS.profile.editUserInfo(this,this.editInfo)
                 }
-                JS.profile.editUserInfo(this,this.editInfo)
             },
             handleError(err){
                 console.log(err)
+                this.$message.error('图片上传出错！')
             }
         }
     }

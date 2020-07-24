@@ -1,2 +1,2 @@
-const SERVICE_PATH = "http://localhost:8080/biz/";
+const SERVICE_PATH = "http://localhost:8081";
 module.exports = SERVICE_PATH;

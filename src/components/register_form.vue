@@ -23,7 +23,7 @@
             <el-button type="text" :disabled="form.userPhone.length<11" @click="check">发送验证</el-button>
         </el-form-item>
         <el-form-item class="item" label="营业执照" v-if="form.userType==2">
-            <el-upload action="http://192.168.0.110/images/" list-type="text" :auto-upload="false" :limit="1"
+            <el-upload :action="this.$store.state.imgUrl" list-type="text" :auto-upload="false" :limit="1"
             :on-exceed="handleExceed" ref="upload-register" :before-upload="handleBefore" :on-success="handleSuccess"
             :on-error="handleError">
                 <el-button size="small" type="primary">点击上传</el-button>
@@ -86,18 +86,6 @@
             }
         },
         methods: {
-            getRequest(requestID) {
-                if(requestID == 0){
-                    this.$message.success('注册成功！')
-                    let url = this.$store.state.userInfo.m_userType==1? '/home':'/dishes'
-                    if(this.$store.state.userInfo.m_userType===0){
-                        url = '/'
-                    }
-                    this.$router.replace(url)
-                }else{
-                    this.$message.error('注册失败！')
-                }
-            },
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
@@ -106,8 +94,7 @@
                         }else if(this.form.userType==2 && this.$refs['upload-register'].$children[0].fileList.length==0){
                             this.$message.error('请上传营业执照！')
                         }else{
-                            // this.$refs['upload-register'].submit()
-                            JS.profile.register(this,this.form)//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            this.$refs['upload-register'].submit()
                         }
                     }
                     else {
@@ -147,13 +134,14 @@
                 this.$router.replace('/')
             },
             handleSuccess(res){
-                if(res.status == 200){
-                    this.form.picPath = res.data.imgUrl
+                if(res.status === 200){
+                    this.form.picPath = res.data.url
+                    JS.profile.register(this,this.form)
                 }
-                JS.profile.register(this,this.form)
             },
             handleError(err){
                 console.log(err)
+                this.$message.error('图片上传出错！')
             }
         }
     }

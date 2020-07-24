@@ -2,39 +2,38 @@
     <div class="container-order">
         <div class="allinfo">
         <div id="pic-order">
-            <img id="pic" :src="orderInfo.m_picPath"/>
+            <img id="pic" :src="orderInfo.picPath"/>
         </div>
         <div class="textinfo">
-        <div id="info-order">
-            <div class="ordertext">
-            <span id="ordertext">菜品：{{orderInfo.m_orderText}}x{{orderInfo.m_orderNumber}}</span>
+            <div id="info-order">
+                <div class="ordertext">
+                    <span id="ordertext">菜品：{{orderInfo.dishName}}x{{orderInfo.number}}</span>
+                </div>
+                <div class="orderprice">
+                    <span id="orderprice">总价：{{orderInfo.price}}</span>
+                </div>
+                <div class="orderID">
+                    <span id="orderID">编号：{{orderInfo.orderID}}</span>
+                </div>
+                <div class="orderstatus">
+                    <span id="orderstatus" :style="{color:(orderInfo.orderStatus==0?'rgb(255,0,0)':'green')}">状态：{{orderInfo.orderStatus==0?"未完成":"已完成"}}</span>
+                </div>
             </div>
-            <div class="orderprice">
-                <span id="orderprice">总价：{{orderInfo.m_orderPrice}}</span>
-            </div>
-        <div class="orderID">
-            <span id="orderID">编号：{{orderInfo.m_orderID}}</span>
-        </div>
-
-        <div class="orderstatus">
-            <span id="orderstatus" :style="{color:(orderInfo.m_orderStatus==0?'rgb(255,0,0)':'green')}">状态：{{orderInfo.m_orderStatus==0?"未完成":"已完成"}}</span>
-        </div>
-        </div>
-        <div id="userinfo-order">
-            <div class="userps">
-                <span id="orderps">备注：{{orderInfo.m_orderPs}}</span>
-            </div>
-            <div class="ordertime">
-                <span id="ordertime">下单时间：{{orderInfo.m_orderTime}}</span>
+            <div id="userinfo-order">
+                <div class="userps">
+                    <span id="orderps">备注：{{orderInfo.PS}}</span>
+                </div>
+                <div class="ordertime">
+                    <span id="ordertime">下单时间：{{orderInfo.date}}</span>
+                </div>
             </div>
         </div>
-    </div>
         </div>
         <div class="keybutton">
-            <el-button @click="changed" v-show="orderInfo.m_orderStatus==0"  round id="keybut" >完成订单
+            <el-button @click="changed" v-show="orderInfo.orderStatus==0"  round id="keybut" >完成订单
             </el-button>
         </div>
-        </div>
+    </div>
 </template>
 
 <script>
@@ -59,7 +58,7 @@
                         type: 'success',
                         message: '订单已完成!',
                     });
-                    JS.orders.completed(this,this.orderInfo.m_orderID)
+                    JS.orders.completed(this,this.orderInfo.orderID)
                 }).catch(() => {
                     this.$message({
                         type: 'info',

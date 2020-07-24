@@ -17,7 +17,7 @@
                     </div>
                     <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 100%;height: 500px;display: flex;flex-wrap: wrap">
                         <el-card :body-style="{display:'flex',alignItems:'center',padding:'10px'}" shadow="hover"
-                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in hostsList" :key="item.m_hostID">
+                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in hostList" :key="item.hostID">
                             <host_item :info="item" style="width: 100%;height: 100%"/>
                         </el-card>
                     </ul>
@@ -32,7 +32,7 @@
                     </div>
                     <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 100%;height: 500px;display: flex;flex-wrap: wrap">
                         <el-card :body-style="{display:'flex',alignItems:'center',padding:'10px'}" shadow="hover"
-                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in recommendList" :key="item.m_hostID">
+                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in recommendList" :key="item.hostID">
                             <host_item :info="item" style="width: 100%;height: 100%"/>
                         </el-card>
                     </ul>
@@ -47,7 +47,7 @@
                     </div>
                     <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 100%;height: 500px;display: flex;flex-wrap: wrap">
                         <el-card :body-style="{display:'flex',alignItems:'center',padding:'10px'}" shadow="hover"
-                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in rankList" :key="item.m_hostID">
+                                 style="width: 45%;height: 120px;margin: 10px" v-for="item in rankList" :key="item.hostID">
                             <host_item :info="item" style="width: 100%;height: 100%"/>
                         </el-card>
                     </ul>
@@ -55,7 +55,7 @@
                 <el-card class="el-card-side">
                     <div slot="header">热门菜品</div>
                     <el-carousel :interval="5000" class="el-car-ad" indicator-position="outside">
-                        <el-carousel-item v-for="dish in hotList" :key="dish.m_dishID">
+                        <el-carousel-item v-for="dish in hotList" :key="dish.dishID">
                             <div class="ad" style="width: 100%;height: 100%">
                                 <hot_item :info="dish" style="width: 100%;height: 100%"/>
                             </div>
@@ -80,21 +80,13 @@
             return {
                 searchText: '',
                 page: 1,
-                hostsList: [],
+                hostList: [],
                 recommendList :[],
                 rankList: [],
                 hotList: [],
             }
         },
         methods: {
-            getRequest(requestID) {
-                if(requestID==0){
-                    // this.$store.state.loading.close()
-                    console.log(requestID)
-                }else{
-                    console.log(requestID)
-                }
-            },
             tagClicked(pg) {
                 this.page = pg
             },
@@ -103,12 +95,12 @@
             },
         },
         created() {
-            // this.$store.state.loading = this.$loading({
-            //     lock: true,
-            //     text: '拼命加载中...',
-            //     spinner: 'el-icon-loading',
-            //     background: 'rgba(0, 0, 0, 0.7)'
-            // });
+            this.$store.state.loading = this.$loading({
+                lock: true,
+                text: '拼命加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             JS.home.mounted(this)
         }
     }

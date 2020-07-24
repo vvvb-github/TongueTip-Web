@@ -17,7 +17,7 @@
                                         >
                                     <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
-                                                     v-for="item in cusOrder" :key="item.orderId">
+                                                     v-for="item in cusOrder" :key="item.orderID">
                                             <el-collapse-item title=" 订单详情" name="1">
                                                 <el-card :body-style="{ padding: '20px',display:'flex'}"
                                                 >
@@ -29,19 +29,16 @@
                                                         <div style="margin-left: 0px">
                                                             <div style="margin-top: 0px">{{item.dishName}}</div>
                                                             <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
-                                                            <div style="margin-top:70px">总价：{{item.prices}}元</div>
+                                                            <div style="margin-top:70px">总价：{{item.price}}元</div>
                                                         </div>
                                                         <div style="margin-left:250px">
                                                             <el-button style="margin-top: 133px" type="primary" class="button clearfix">举报</el-button>
                                                         </div>
                                                         <div style="margin-left: 20px">
-                                                            <div style="margin-top: 0px" class="time">{{ item.Date }}</div>
+                                                            <div style="margin-top: 0px" class="time">{{ item.date }}</div>
                                                             <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderId)">评论</el-button>
-
                                                         </div>
-
                                                     </el-card>
-
                                                 </el-card>
                                             </el-collapse-item>
                                         </el-collapse>
@@ -59,7 +56,7 @@
                                         @selection-change="handleSelectionChange">
                                     <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
-                                                     v-for="item in cusOrderNotPay" :key="item.orderId">
+                                                     v-for="item in cusOrderNotPay" :key="item.orderID">
                                             <el-collapse-item title=" 订单详情" name="1">
                                                 <el-card :body-style="{ padding: '20px',display:'flex'}"  >
                                                     <el-card style="width:200px;height:200px" >
@@ -69,16 +66,16 @@
                                                         <div style="margin-left: 0px">
                                                             <div style="margin-top: 0px">{{item.dishName}}</div>
                                                             <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
-                                                            <div style="margin-top:70px">总价：{{item.prices}}元</div>
+                                                            <div style="margin-top:70px">总价：{{item.price}}元</div>
                                                         </div>
                                                         <div style="margin-left:230px">
                                                             <el-button style="margin-top: 133px" type="primary" class="button clearfix"
-                                                            @click="funcDel()">取消订单</el-button>
+                                                            @click="funcDel(item.orderId)">取消订单</el-button>
                                                         </div>
                                                         <div style="margin-left: 20px">
-                                                            <div style="margin-top: 0px" class="time">{{item.Date}}</div>
+                                                            <div style="margin-top: 0px" class="time">{{item.date}}</div>
                                                             <el-button style="margin-top: 110px" type="primary" class="button clearfix"
-                                                            @click="funcPay">支付</el-button>
+                                                            @click="funcPay(item.orderID)">支付</el-button>
                                                         </div>
 
                                                     </el-card>
@@ -127,11 +124,7 @@
                 tableData: [{}],
                 multipleSelection: [],
                 activeName: 'second',
-                //Date: '订单时间',
                 activeNames: ['1'],
-                //dishName:'汉堡',
-                //number:'2',
-                //prices:'128',
                 dialogVisible: false,
                 formLabelWidth: '120px',
                 comment: {
@@ -147,70 +140,8 @@
                     star:[]
                 },
                 colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
-
-                cusOrder:[
-                    {
-
-                        Date:'07/20/20:39',
-                        dishName:'汉堡',
-                        number:'2',
-                        prices:'128',
-                        DishId:'',
-                        orderId:'0001',
-                        image:' ',
-                    },
-                    {
-                        Date:'07/20/19:56',
-                        dishName:'辣条',
-                        number:'5',
-                        prices:'13',
-                        DishId:'',
-                        orderId:'0002',
-                        image:' ',
-                    },
-                    {
-                        Date:'07/20/20:00',
-                        dishName:'鸡翅',
-                        number:'19',
-                        prices:'498',
-                        DishId:'',
-                        orderId:'0003',
-                        image:' ',
-                    },
-
-                ],
-
-                cusOrderNotPay:[
-                    {
-
-                        Date:'07/20/19:54',
-                        dishName:'汉堡',
-                        number:'2',
-                        prices:'128',
-                        DishId:'',
-                        orderId:'0001',
-                        image:' ',
-                    },
-                    {
-                        Date:'07/20/19:56',
-                        dishName:'辣条',
-                        number:'5',
-                        prices:'13',
-                        DishId:'',
-                        orderId:'0002',image:' ',
-                    },
-                    {
-                        Date:'07/20/20:00',
-                        dishName:'鸡翅',
-                        number:'19',
-                        prices:'498',
-                        DishId:'',
-                        orderId:'0003',
-                        image:' ',
-                    },
-
-                ]
-
+                cusOrder:[],
+                cusOrderNotPay:this.$store.state.orderInfo
             }
         },
         methods: {
@@ -226,10 +157,6 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            //checkAll()
-            //{
-
-            //},
             handleClick(tab, event) {
                 console.log(tab, event);
             },
@@ -248,8 +175,6 @@
                         return false;
                     }
                 });
-
-
             },
             fucA(OrderId){
                 this.dialogVisible=true;
@@ -257,12 +182,22 @@
             },
             funcDel(OrderId){
                 this.comment.Oid=OrderId;
+                JS.order.deleteOrder(this,OrderId);
             },
             funcPay(OrderId){
                 this.comment.Oid=OrderId;
+                JS.order.pay(this);
             }
-
-    }
+        },
+        created() {
+            this.$store.state.loading = this.$loading({
+                lock: true,
+                text: '拼命加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            JS.order.mounted(this);
+        },
     }
 </script>
 

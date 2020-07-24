@@ -1,5 +1,6 @@
 <template>
     <background :show-head="false">
+        <page_bar style="background: white" class="bar" v-if="false"></page_bar>
         <el-card :body-style="bodyStyle" class="container">
             <div class="image">
                 <img id="shejian" src="../assets/shejian.png"/>
@@ -17,7 +18,7 @@
         name: "Login",
         components: {
             Background,
-            login_form,
+            login_form
         },
         data() {
             return {

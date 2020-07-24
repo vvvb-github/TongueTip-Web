@@ -1,31 +1,37 @@
 import axios from "axios";
 
 export default {
-    mounted(vue){
-        axios
-            .get(vue.SERVICE_PATH+"Orders.json",vue.$store.state.m_hostID)
-            .then(function(response)
-            {
-                vue.hostorders = response["data"]["hostorders"];
+    mounted(vue){//@API 16
+        axios.get(vue.SERVICE_PATH+'/order/hostOrder',{params:{hostID:vue.$store.state.hostInfo.hostID}})
+            .then(res=>{
+                let data = res.data
+                if(data.status === 0){
+                    vue.$message.error('服务器错误！')
+                }else{
+                    vue.hostOrders = data.hostOrders
+                    vue.$store.state.loading.close()
+                }
             })
-            .catch(function(err)
-            {
-                console.log(err);
-            });
+            .catch(err=>{
+                console.log(err)
+                vue.$message.error('服务器错误！')
+            })
     },
-    completed(vue,orderID)
-    {
-        axios
-            .get(vue.SERVICE_PATH+"status.json",orderID)
-            .then(function(response)
-            {
-                var status = response["data"]["status"];
-                if (status==1)
-                    vue.$router.replace("Orders");
-            })
-            .catch(function(err)
-            {
-                console.log(err);
-            });
+    completed(vue,orderID) {//@API 17
+        axios.get(vue.SERVICE_PATH+'/order/change',
+            {params:{
+                    orderID: orderID,
+                    newState: 1
+                }}).then(res=>{
+                    if(res.data.status === 0){
+                        vue.$message.error('服务器错误！')
+                    }else{
+                        vue.$message.success('已完成订单！')
+                        vue.$router.replace('orders')
+                    }
+        }).catch(err=>{
+            console.log(err)
+            vue.$message.error('服务器错误！')
+        })
     }
 }

@@ -85,7 +85,9 @@ export default {
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.$message.success('修改成功！')
-                    vue.$store.commit('setUserIcon',newInfo.picPath)
+                    if(newInfo.picPath != '') {
+                        vue.$store.commit('setUserIcon', newInfo.picPath)
+                    }
                     vue.$store.commit('setUserName',newInfo.userName)
                     vue.$store.commit('setUserPhone',newInfo.userPhone)
                     vue.inEditing = false
@@ -115,13 +117,14 @@ export default {
                         vue.$message.success('注册成功！请等待管理员审核')
                         vue.$router.replace('/')
                     }else{
-                        vue.$message.error('注册成功！')
+                        vue.$message.success('注册成功！')
                         vue.$store.commit('setUserID',data.userID)
                         vue.$store.commit('setUserName',form.userName)
                         vue.$store.commit('setUserPhone',form.userPhone)
                         vue.$store.commit('setUserType',form.userType)
                         vue.$store.commit('setUserPriority',data.userPriority)
                         vue.$store.commit('setUserIcon',data.iconPath)
+                        vue.$router.replace('home')
                     }
                 }
             })

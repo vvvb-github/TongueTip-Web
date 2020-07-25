@@ -122,9 +122,12 @@
                 }
             },
             handleSuccess(res){
-                if(res.status == 200){
-                    this.editInfo.picPath = res.data.url
+                if(res.status === 1){
+                    this.editInfo.picPath = res.url
                     JS.profile.editUserInfo(this,this.editInfo)
+                }else{
+                    console.log(res)
+                    this.$message.error('图片上传出错！')
                 }
             },
             handleError(err){

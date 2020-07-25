@@ -11,16 +11,16 @@
                     <el-avatar id="user-icon"
                                size="large"
                                fit="fill"
-                               :src="this.$store.state.userInfo.m_iconPath"
+                               :src="this.$store.state.userInfo.iconPath"
                                style="cursor: pointer" @click="goInfo"/>
                     <el-dropdown id="el-drop-group" @command="handleClick">
                     <span class="el-dropdown-link">
-                    {{this.$store.state.userInfo.m_userName}}<i class="el-icon-arrow-down el-icon--right"></i>
+                    {{this.$store.state.userInfo.userName}}<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="a">个人信息</el-dropdown-item>
                             <el-dropdown-item command="d">返回主页</el-dropdown-item>
-                            <el-dropdown-item command="e">{{this.$store.state.userInfo.m_userType==1? '我的订单':'订单管理'}}</el-dropdown-item>
+                            <el-dropdown-item command="e">{{this.$store.state.userInfo.userType==1? '我的订单':'订单管理'}}</el-dropdown-item>
                             <el-dropdown-item command="b">切换账户</el-dropdown-item>
                             <el-dropdown-item command="c">注销</el-dropdown-item>
                         </el-dropdown-menu>
@@ -68,12 +68,12 @@
                         break
                     }
                     case 'd': {
-                        let url = (this.$store.state.userInfo.m_userType==1? 'home':'dishes')
+                        let url = (this.$store.state.userInfo.userType==1? 'home':'dishes')
                         this.$router.replace(url)
                         break
                     }
                     case 'e': {
-                        let url = (this.$store.state.userInfo.m_userType==1? 'order':'orders')
+                        let url = (this.$store.state.userInfo.userType==1? 'order':'orders')
                         this.$router.replace(url)
                     }
                 }

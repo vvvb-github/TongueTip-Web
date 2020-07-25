@@ -346,11 +346,14 @@
                 }
             },
             handleSuccess(res){
-                if(res.status == 200){
-                    this.dish_form.picPathList.push(res.data.url)
+                if(res.status === 1){
+                    this.dish_form.picPathList.push(res.url)
                     if(this.num === this.add_form.picPathList.length){
                         JS.detail.changeDishInfo(this,this.dish_form)
                     }
+                }else{
+                    console.log(res)
+                    this.$message.error('图片上传出错！')
                 }
             },
             handleError(err){

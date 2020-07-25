@@ -216,9 +216,12 @@
                 }
             },
             handleSuccess(res){
-                if(res.status == 200){
-                    this.host_form.picPath = res.data.url
+                if(res.status == 1){
+                    this.host_form.picPath = res.url
                     JS.dishes.changeHostInfo(this,this.host_form)
+                }else{
+                    console.log(res)
+                    this.$message.error('图片上传出错！')
                 }
             },
             handleError(err){
@@ -226,11 +229,14 @@
                 this.$message.error('图片上传出错！')
             },
             handleSuccess2(res) {
-                if(res.status == 200){
-                    this.add_form.picPathList.push(res.data.url)
+                if(res.status === 1){
+                    this.add_form.picPathList.push(res.url)
                     if(this.num === this.add_form.picPathList.length){
                         JS.dishes.addDish(this,this.add_form)
                     }
+                }else{
+                    console.log(res)
+                    this.$message.error('图片上传出错！')
                 }
             },
             handleError2(err){

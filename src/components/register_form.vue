@@ -94,7 +94,12 @@
                         }else if(this.form.userType==2 && this.$refs['upload-register'].$children[0].fileList.length==0){
                             this.$message.error('请上传营业执照！')
                         }else{
-                            this.$refs['upload-register'].submit()
+                            if(this.form.userType==2) {
+                                this.$refs['upload-register'].submit()
+                            }else{
+                                this.form.picPath = ''
+                                JS.profile.register(this,this.form)
+                            }
                         }
                     }
                     else {
@@ -134,9 +139,12 @@
                 this.$router.replace('/')
             },
             handleSuccess(res){
-                if(res.status === 200){
-                    this.form.picPath = res.data.url
+                if(res.status === 1){
+                    this.form.picPath = res.url
                     JS.profile.register(this,this.form)
+                }else{
+                    console.log(res)
+                    this.$message.error('图片上传出错！')
                 }
             },
             handleError(err){

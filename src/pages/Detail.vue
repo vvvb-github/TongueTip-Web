@@ -3,12 +3,11 @@
         <background :show-head="true" style="width: 45%;height: 100%">
             <div style="width: 100%;height: 85%;display: flex;flex-direction: row;justify-content: center">
                 <div style="display: flex;width: 35%;height: 100%;flex-direction: column">
-                    <!--走马灯 改了改了item.ID-->
                     <el-card style="width: 100%;height: 50%;background: rgba(255,255,255,0.7)"
                              :body-style="{height:'100%'}">
                             <el-carousel style="width: 100%;height: 100%" height="100%"
                                          :interval="4000"  indicator-position="none">
-                                <el-carousel-item v-for="item in this.$store.state.dishInfo.picPathList" :key="item.ID">
+                                <el-carousel-item v-for="item in this.$store.state.dishInfo.picPathList" :key="item">
                                     <img :src="item" class="image">
                                 </el-carousel-item>
                             </el-carousel>
@@ -64,7 +63,7 @@
                             <div id="r">
                                 <div class="right">
                                     <el-rate
-                                            v-model="this.$store.state.dishInfo.total_star"
+                                            v-model="total_star"
                                             disabled
                                             show-score
                                             text-color="#ff9900"
@@ -242,6 +241,7 @@
         },
         data(){
             return{
+                total_star: this.$store.state.dishInfo.star,
                 dish_form: {
                     picPathList:[],//菜的图片，还不知道怎么弄
                     dishName: '',

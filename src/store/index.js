@@ -5,8 +5,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
+        payCode: '',
         loading: null,
-        imgUrl: 'http://192.168.0.110:8081/admin/image',
+        imgUrl: 'http://jiekou.jinshangcheng.com.cn/api/admin/image',
         userInfo: {
             userID: 0,
             userName: '',
@@ -106,6 +107,9 @@ const store = new Vuex.Store({
                     break;
                 }
             }
+        },
+        setPayCode(state,payload){
+            state.payCode = 'http://qr.liantu.com/api.php?text=' + payload
         }
     }
 })

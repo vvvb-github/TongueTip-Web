@@ -14,7 +14,7 @@
                         <div style="width: 100%;display: flex;flex-direction: column;margin-top: 5%">
                             <span style="font-size: large;color: red">{{this.$store.state.hostInfo.hostName}}</span>
                             <el-rate
-                                    v-model="this.$store.state.hostInfo.star"
+                                    v-model="star"
                                     disabled
                                     show-score
                                     text-color="#ff9900"
@@ -114,6 +114,7 @@
         components: {dish_item, Background},
         data() {
             return {
+                star: this.$store.state.hostInfo.star,
                 num: 0,
                 dishList: [],
                 dialogShow: false,

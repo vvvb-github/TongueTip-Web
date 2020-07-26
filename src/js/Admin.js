@@ -3,9 +3,11 @@ import axios from "axios";
 export default {
     accept(vue,i) {//@API 19
         //通过审核，checkList是拿到的审核列表，i是被你询问审核的下标
+        console.log(vue.checkList[i])
         axios.get(vue.SERVICE_PATH+'/admin/accept',{params:{checkID:vue.checkList[i].checkID}})
             .then(res=>{
                 if(res.data.status === 0){
+                    console.log(res)
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.$message.success('已通过该注册审核')

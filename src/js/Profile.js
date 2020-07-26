@@ -22,7 +22,7 @@ export default {
                 let data = res.data
                 if(data.status === 0){
                     vue.$message.warning('手机号或密码错误！')
-                }else{
+                } else if(data.status === 1){
                     vue.$store.commit('setUserID',data.userID)
                     vue.$store.commit('setUserName',data.userName)
                     vue.$store.commit('setUserPhone',phone)
@@ -38,7 +38,7 @@ export default {
                                 userID: vue.$store.state.userInfo.userID
                             }
                         }).then(res=>{
-                            let data = res
+                            let data = res.data
                             if(data.status===0){
                                 vue.$message.error('获取商家信息失败！')
                                 vue.$router.replace('dishes')
@@ -58,6 +58,8 @@ export default {
                             vue.$message.error('服务器错误！')
                         })
                     }
+                } else{
+                    vue.$message.warning('您的注册尚在等待审核，请不要着急哦~')
                 }
             })
             .catch(err=>{

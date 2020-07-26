@@ -6,6 +6,7 @@ export default {
         //要这家店的菜品数据
         axios.get(vue.SERVICE_PATH+'/dish/get',{params:{hostID:vue.$store.state.hostInfo.hostID}})
             .then(res=>{
+                console.log(res)
                 let data = res.data
                 if(data.status === 0){
                     vue.$message.error('服务器错误！')

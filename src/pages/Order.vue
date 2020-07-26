@@ -23,7 +23,7 @@
                                                 >
 
                                                     <el-card style="width:200px;height:200px" >
-                                                        <img src="item.image" class="image">
+                                                        <img :src="item.image" class="image">
                                                     </el-card>
                                                     <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
                                                         <div style="margin-left: 0px">
@@ -60,7 +60,7 @@
                                             <el-collapse-item title=" 订单详情" name="1">
                                                 <el-card :body-style="{ padding: '20px',display:'flex'}"  >
                                                     <el-card style="width:200px;height:200px" >
-                                                        <img src="item.image" class="image">
+                                                        <img :src="item.image" class="image">
                                                     </el-card>
                                                     <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
                                                         <div style="margin-left: 0px">
@@ -70,7 +70,7 @@
                                                         </div>
                                                         <div style="margin-left:230px">
                                                             <el-button style="margin-top: 133px" type="primary" class="button clearfix"
-                                                            @click="funcDel(item.orderId)">取消订单</el-button>
+                                                            @click="funcDel(item.orderID)">取消订单</el-button>
                                                         </div>
                                                         <div style="margin-left: 20px">
                                                             <div style="margin-top: 0px" class="time">{{item.date}}</div>
@@ -110,6 +110,12 @@
                 <el-button type="primary" @click="changeInfo()">确 定</el-button>
             </div>
         </el-dialog>
+        <el-dialog title="微信支付" :visible="payShow">
+            <img :src="this.$store.state.payCode" />
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="cancelPay">放弃支付</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -121,6 +127,7 @@
         components:{ Background},
         data() {
             return {
+                payShow: false,
                 tableData: [{}],
                 multipleSelection: [],
                 activeName: 'second',
@@ -141,7 +148,8 @@
                 },
                 colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
                 cusOrder:[],
-                cusOrderNotPay:this.$store.state.orderInfo
+                cusOrderNotPay:this.$store.state.orderInfo,
+                timer: null
             }
         },
         methods: {
@@ -181,12 +189,14 @@
                 this.comment.Oid=OrderId;
             },
             funcDel(OrderId){
-                this.comment.Oid=OrderId;
                 JS.order.deleteOrder(this,OrderId);
             },
             funcPay(OrderId){
-                this.comment.Oid=OrderId;
-                JS.order.pay(this);
+                JS.order.pay(this,OrderId);
+            },
+            cancelPay(){
+                clearInterval(this.timer)
+                this.payShow = false
             }
         },
         created() {

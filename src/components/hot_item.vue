@@ -1,7 +1,7 @@
 <template>
     <div id="container-hot" @click="go" style="cursor: pointer">
         <div id="hot-img">
-            <img style="width: 100%;height: 100%;object-fit:fill" :src="hotInfo.picPath"/>
+            <img style="width: 100%;height: 100%;object-fit:fill" :src="hotInfo.picPath.split('+')[0]"/>
         </div>
         <div id="hot-info">
             <el-button type="text" id="name">{{hotInfo.dishName}}</el-button>

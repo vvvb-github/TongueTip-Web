@@ -5,11 +5,13 @@ export default {
     mounted(vue){//@API 11
         axios.get(vue.SERVICE_PATH+'/dish/detail',{params:{dishID:vue.$store.state.dishInfo.dishID}})
             .then(res=>{
+                console.log(res)
                 let data = res.data
                 if(data.status === 0){
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.$store.commit('setImgList',data.imgList.split('+'))
+                    console.log('a1')
                     vue.$store.commit('setDishName',data.dishName)
                     vue.$store.commit('setDishPrice',data.price)
                     vue.$store.commit('setDishSales',data.sales)
@@ -32,12 +34,13 @@ export default {
         //     tags:this.$store.state.dishInfo.tags,
         // },
         let data = {
-            dishID: this.$store.state.dishInfo.dishID,
+            dishID: vue.$store.state.dishInfo.dishID,
             imgList: form.picPathList.join('+'),
             dishName: form.dishName,
             price: form.price,
-            tagList: form.picPathList.join('+')
+            tagList: form.tags.join('+')
         }
+        console.log(data)
         axios.post(vue.SERVICE_PATH+'/dish/edit',Qs.stringify(data))
             .then(res=>{
                 if(res.data.status === 0){

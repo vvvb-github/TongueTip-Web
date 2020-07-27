@@ -7,7 +7,7 @@ const store = new Vuex.Store({
     state:{
         payCode: '',
         loading: null,
-        imgUrl: 'http://jiekou.jinshangcheng.com.cn/api/admin/image',
+        imgUrl: 'http://64.64.228.191:8081/api/admin/image',
         userInfo: {
             userID: 0,
             userName: '',
@@ -95,7 +95,11 @@ const store = new Vuex.Store({
             state.dishInfo.star = payload
         },
         setDishTagList(state,payload){
-            state.dishInfo.tags = payload
+            if(payload.length>0 && payload[0] === ''){
+                state.dishInfo.tags = []
+            }else {
+                state.dishInfo.tags = payload
+            }
         },
         addOrder(state,payload){
             state.orderInfo.push(payload)

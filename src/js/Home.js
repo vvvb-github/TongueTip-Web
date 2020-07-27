@@ -44,6 +44,23 @@ export default {
                 vue.$message.error('服务器错误！')
             })
     },
+    getHostByID(vue){//@API 21
+        axios.get(vue.SERVICE_PATH+'/home/hostbyid',{params:{hostID:vue.$store.state.hostInfo.hostID}})
+            .then(res=>{
+                let data = res.data
+                if(data.status === 0){
+                    vue.$message.error('服务器错误！')
+                }else{
+                    vue.$store.commit('setHostName',data.hostName)
+                    vue.$store.commit('setHostPhone',data.phone)
+                    vue.$store.commit('setHostLocation',data.location)
+                    vue.$store.commit('setHostStar',data.star)
+                    vue.$store.commit('setHostIcon',data.picPath)
+                    vue.$store.commit('setHostIntroduction',data.introduction)
+                    vue.$router.replace('dishes')
+                }
+            })
+    },
     search(vue,text){
         console.log(vue,text)
         //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!搜索功能！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！

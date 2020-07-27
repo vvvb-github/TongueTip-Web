@@ -27,7 +27,7 @@ export default {
                         vue.$message.error('服务器错误！')
                     }else{
                         vue.$message.success('已完成订单！')
-                        vue.$router.replace('orders')
+                        this.mounted(vue)
                     }
         }).catch(err=>{
             console.log(err)

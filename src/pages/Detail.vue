@@ -2,7 +2,7 @@
     <div>
         <background :show-head="true" style="width: 45%;height: 100%">
             <div style="width: 100%;height: 85%;display: flex;flex-direction: row;justify-content: center">
-                <div style="display: flex;width: 35%;height: 100%;flex-direction: column">
+                <div style="display: flex;width: 35%;height: 100%;flex-direction: column;margin-right: 10px">
                     <el-card style="width: 100%;height: 50%;background: rgba(255,255,255,0.7)"
                              :body-style="{height:'100%'}">
                             <el-carousel style="width: 100%;height: 100%" height="100%"
@@ -22,9 +22,9 @@
                                     <div class="left">
                                         菜名：
                                     </div>
-                                    <div id="name">
+                                    <span id="name" style="color: orangered;font-family: 'Microsoft YaHei';">
                                         {{this.$store.state.dishInfo.dishName}}
-                                    </div>
+                                    </span>
                                 </div>
                                 <div class="lan">
                                     <div class="left">
@@ -67,8 +67,10 @@
                                             disabled
                                             show-score
                                             text-color="#ff9900"
-                                            score-template="{value}">
+                                            score-template="{value}"
+                                    v-if="total_star>0">
                                     </el-rate>
+                                    <span v-else style="color: black;font-family: 'Microsoft YaHei';font-size: medium">暂无评分哦</span>
                                 </div>
                                 <div class="right">
                                     <el-tag v-if="this.$store.state.dishInfo.tags.length>=1">
@@ -98,12 +100,12 @@
                     </el-card>
                 </div>
                 <!--评价 改了改了item.ID-->
-                <el-card style="width: 45%;height:100%;background: rgba(255,255,255,0.7);" :body-style="{height:'100%'}">
-                        <span>用户评价</span>
-                        <ul
-                                class="list"
+                <el-card style="width: 45%;height:100%;background: rgba(255,255,255,0.7);margin-left: 10px" :body-style="{height:'100%'}">
+                        <span slot="header">用户评价</span>
+                        <ul class="list"
                                 infinite-scroll-disabled="false"
-                                style="overflow:auto;height:95%;">
+                                style="overflow:auto;height:95%;"
+                        v-if="evaluation.length>0">
                             <el-card  v-for="item in evaluation" :key="item.ID"
                                       style="width: 100%;height: 30%;background: rgba(255,255,255,0.7);"
                                       :body-style="{height:'100%'}">
@@ -131,7 +133,7 @@
                                 </div>
                             </el-card>
                         </ul>
-
+                    <span v-else style="color: black;font-family: 'Microsoft YaHei';font-size: large">暂无评论哦</span>
                 </el-card>
             </div>
         </background>
@@ -284,7 +286,7 @@
                 console.log(value);
             },
             handleClose(tag) {
-                this.tags.splice(tag, 1);
+                this.dish_form.tags.splice(tag, 1);
             },
             showInput() {
                 this.inputVisible = true;
@@ -295,7 +297,7 @@
             handleInputConfirm() {
                 let inputValue = this.inputValue;
                 if (inputValue) {
-                    this.tags.push(inputValue);
+                    this.dish_form.tags.push(inputValue);
                 }
                 this.inputVisible = false;
                 this.inputValue = '';
@@ -305,7 +307,12 @@
                 this.$refs['dish_form'].validate((valid) => {
                     if (valid) {
                         this.num = this.$refs['upload-change-dish'].$children[0].fileList.length
-                        this.$refs['upload-add-dish'].submit()
+                        if(this.num > 0) {
+                            this.$refs['upload-change-dish'].submit()
+                        }else{
+                            this.dish_form.picPathList = []
+                            JS.detail.changeDishInfo(this,this.dish_form)
+                        }
                     }
                     else {
                         this.$message.error('提交出错！')
@@ -348,7 +355,7 @@
             handleSuccess(res){
                 if(res.status === 1){
                     this.dish_form.picPathList.push(res.url)
-                    if(this.num === this.add_form.picPathList.length){
+                    if(this.num === this.dish_form.picPathList.length){
                         JS.detail.changeDishInfo(this,this.dish_form)
                     }
                 }else{

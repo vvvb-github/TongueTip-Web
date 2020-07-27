@@ -11,6 +11,9 @@ export default {
                 if(data.status === 0){
                     vue.$message.error('服务器错误！')
                 }else{
+                    for(let i=0;i<data.dishList.length;i++){
+                        data.dishList[i].picPath = data.dishList[i].picPath.split('+')[0]
+                    }
                     vue.dishList = data.dishList
                     vue.$store.state.loading.close()
                 }
@@ -76,7 +79,8 @@ export default {
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.$message.success('添加菜品成功！')
-                    vue.$router.replace('dishes')
+                    this.mounted(vue)
+                    vue.addShow = false
                 }
             })
             .catch(err=>{

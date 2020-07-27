@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <background style="width: 45%;height: 100%" :show-head="true">
-            <el-card class="box-card" style="width:80%;height:600px">
+            <el-card class="box-card" style="width:80%;height:630px;background: rgba(255,255,255,0.7)">
                 <el-container style="height: 600px">
                     <el-main>
                         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -14,6 +14,7 @@
                                         tooltip-effect="dark"
                                         style="width: 100%;height:430px"
                                         @selection-change="handleSelectionChange"
+                                        v-if="cusOrder.length>0"
                                         >
                                     <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
@@ -36,7 +37,9 @@
                                                         </div>
                                                         <div style="margin-left: 20px">
                                                             <div style="margin-top: 0px" class="time">{{ item.date }}</div>
-                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderId)">评论</el-button>
+                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID)">
+                                                                评论
+                                                            </el-button>
                                                         </div>
                                                     </el-card>
                                                 </el-card>
@@ -44,6 +47,9 @@
                                         </el-collapse>
                                     </el-table-column>
                                 </el-table>
+                                <span v-else style="color: black;font-size: large;font-family: 'Microsoft YaHei'">
+                                    暂无订单
+                                </span>
                             </el-tab-pane>
 
                             <el-tab-pane label="未处理" name="second">
@@ -53,7 +59,8 @@
                                         tooltip-effect="dark"
                                         height="480"
                                         style="width: 100%;height:430px"
-                                        @selection-change="handleSelectionChange">
+                                        @selection-change="handleSelectionChange"
+                                v-if="cusOrderNotPay.length>0">
                                     <el-table-column prop="date" label="订单列表" width="1000px">
                                         <el-collapse v-model="activeNames" @change="handleChange"
                                                      v-for="item in cusOrderNotPay" :key="item.orderID">
@@ -84,6 +91,9 @@
                                         </el-collapse>
                                     </el-table-column>
                                 </el-table>
+                                <span v-else style="color: black;font-size: large;font-family: 'Microsoft YaHei'">
+                                    暂无订单
+                                </span>
                             </el-tab-pane>
                         </el-tabs>
                     </el-main>

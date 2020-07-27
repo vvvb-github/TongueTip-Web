@@ -19,8 +19,10 @@
                                     show-score
                                     text-color="#ff9900"
                                     score-template="{value}"
-                                    id="stars">
+                                    id="stars"
+                            v-if="star>0">
                             </el-rate>
+                            <span v-else style="color: black;font-family: 'Microsoft YaHei';font-size: large">暂无评分</span>
                             <span>联系方式：{{this.$store.state.hostInfo.phone}}</span>
                             <span>地点：{{this.$store.state.hostInfo.location}}</span>
                             <p>简介：{{this.$store.state.hostInfo.introduction}}</p>
@@ -32,12 +34,14 @@
                         全部菜品<el-button @click="addShow=true" type="primary"
                                        v-if="this.$store.state.userInfo.userType==2">新增菜品+</el-button>
                     </div>
-                    <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 950px;height: 500px">
-                        <el-card :body-style="{padding:'10px',height:'100%'}" shadow="hover" style="width: 900px;height: 150px"
+                    <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 950px;height: 500px"
+                    v-if="dishList.length>0">
+                        <el-card :body-style="{padding:'10px',height:'100%'}" shadow="hover" style="width: 900px;height: 150px;margin-bottom: 20px"
                         v-for="dish in dishList" :key="dish.dishID">
                             <dish_item :info="dish" style="width: 100%;height: 130px"/>
                         </el-card>
                     </ul>
+                    <span v-else style="color: black;font-family: 'Microsoft YaHei';font-size: large">暂无菜品哦</span>
                 </el-card>
             </div>
         </background>

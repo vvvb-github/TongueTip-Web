@@ -3,13 +3,14 @@
         <background show-head="true" class="container-bg">
             <el-card class="infinite-list-wrapper"
                      :body-style="{width:'1200px',display:'flex',flexDirection:'column',alignItems:'center'}">
-                <ul class="list" :infinite-scroll-disabled="false">
+                <ul class="list" :infinite-scroll-disabled="false" v-if="hostOrders.length>0">
                     <div v-for="item in hostOrders" class="list-item" :key="item.orderID">
                         <el-card class="ordercard">
                             <order_item class="orderitem" :info="item"/>
                         </el-card>
                     </div>
                 </ul>
+                <span v-else style="font-family: 'Microsoft YaHei';font-size: large;color: black">暂无订单哦</span>
             </el-card>
         </background>
     </div>

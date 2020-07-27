@@ -11,8 +11,10 @@
                     show-score
                     text-color="#ff9900"
                     score-template="{value}"
-                    id="stars">
+                    id="stars"
+            v-if="hostInfo.star>0">
             </el-rate>
+            <span v-else style="color: black;font-family: 'Microsoft YaHei';font-size: medium">暂无评分</span>
             <span id="location">位置：{{hostInfo.location}}</span>
             <span id="phone">联系方式：{{hostInfo.phone}}</span>
         </div>
@@ -20,6 +22,8 @@
 </template>
 
 <script>
+    import JS from "@/JS";
+
     export default {
         name: "host_item",
         data() {
@@ -33,7 +37,7 @@
         methods: {
             goDish() {
                 this.$store.commit('setHostID',this.hostInfo.hostID)
-                this.$router.replace('dishes')
+                JS.home.getHostByID(this)
             }
         }
     }
@@ -59,7 +63,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        justify-content: center;
+        justify-content: space-around;
         width: 70%;
         height: 95%;
         margin-left: 10%;

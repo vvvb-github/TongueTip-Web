@@ -3,7 +3,7 @@
         <div style="height: 100%;width: 20%;">
             <img :src="dishInfo.picPath" style="width: 150px;height: 130px;object-fit: fill"/>
         </div>
-        <div style="height: 100%;width: 20%;margin-left: 5%;display: flex;flex-direction: column;justify-content: center;align-items: flex-start">
+        <div style="height: 100%;width: 17%;margin-left: 5%;display: flex;flex-direction: column;justify-content: space-between;align-items: flex-start">
             <el-button type="text" class="el-button-dish-name">{{dishInfo.dishName}}</el-button>
             <el-rate
                     v-model="dishInfo.star"
@@ -11,17 +11,21 @@
                     show-score
                     text-color="#ff9900"
                     score-template="{value}"
-                    id="stars">
+                    id="stars"
+                    v-if="dishInfo.star>0">
             </el-rate>
+            <span v-else style="font-size: medium;font-family: 'Microsoft YaHei';color: black">暂无评价</span>
             <span class="span-price">￥ {{dishInfo.price}}</span>
+            <span style="font-size: medium;font-family: 'Microsoft YaHei';color: #ffa819">销量：{{dishInfo.sales}}</span>
         </div>
-        <div style="width: 40%;height: 90%;margin-left: 5%">
-            <el-tag type="warning" class="dish-tags" :style="{color: colors[Math.floor(Math.random()*5)]}"
-                    v-for="text in dishInfo.tags.split('+')" :key="text">{{text}}</el-tag>
+        <div style="width: 20%;height: 90%;margin-left: 5%;display: flex;align-content: center">
+            <el-tag :type="colors[Math.floor(5*Math.random())]" class="dish-tags"
+                    v-for="text in taglst" :key="text">{{text}}</el-tag>
         </div>
-<!--        <div style="width: 20%;height: 100%;display: flex;justify-content: center;align-items: center">-->
-<!--            <el-button style="background-color: orangered;">下单</el-button>-->
-<!--        </div>-->
+        <div style="width: 40%;height: 100%;">
+            <span style="font-size: medium;font-weight: bold;color: dodgerblue">简介</span>
+            <p style="font-size: medium">{{dishInfo.introduction}}</p>
+        </div>
     </div>
 </template>
 
@@ -32,7 +36,7 @@
             return {
                 dishInfo: this.info,
                 colors: [
-                    'green','purple','red','orange','blue'
+                    'primary','warning','danger','info','success'
                 ],
             }
         },
@@ -43,6 +47,15 @@
             goDetail() {
                 this.$store.commit('setDishID',this.dishInfo.dishID)
                 this.$router.replace('detail')
+            },
+        },
+        computed: {
+            taglst() {
+                if(this.dishInfo.tags === ''){
+                    return []
+                }else {
+                    return this.dishInfo.tags.split('+')
+                }
             }
         }
     }

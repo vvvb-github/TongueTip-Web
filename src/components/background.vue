@@ -21,8 +21,8 @@
                             <el-dropdown-item command="a">个人信息</el-dropdown-item>
                             <el-dropdown-item command="d">返回主页</el-dropdown-item>
                             <el-dropdown-item command="e">{{this.$store.state.userInfo.userType==1? '我的订单':'订单管理'}}</el-dropdown-item>
-                            <el-dropdown-item command="b">切换账户</el-dropdown-item>
-                            <el-dropdown-item command="c">注销</el-dropdown-item>
+                            <el-dropdown-item command="b">退出登录</el-dropdown-item>
+<!--                            <el-dropdown-item command="c">注销</el-dropdown-item>-->
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>

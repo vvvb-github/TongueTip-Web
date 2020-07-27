@@ -27,3 +27,8 @@
         App.vue 根组件，进行路由、Vuex等全局注册
         main.js 入口
         JS.js 全局数据与业务对象
+## 运行前请安装
+- npm install vue-router
+- npm install vuex
+- npm install element-ui
+- npm install vuex-persistedstate

@@ -40,6 +40,7 @@
         },
         methods: {
             login() {
+                console.log(this.$store.state)
                 let isValid = true
                 this.error_phone = ''
                 this.error_pass = ''

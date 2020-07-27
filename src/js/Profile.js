@@ -18,7 +18,6 @@ export default {
         // data.append('userType',type)
         axios.post(vue.SERVICE_PATH+'/profile/login',Qs.stringify(data))
             .then(res=>{
-                console.log(res)
                 let data = res.data
                 if(data.status === 0){
                     vue.$message.warning('手机号或密码错误！')

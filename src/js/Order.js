@@ -11,7 +11,7 @@ export default {
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.cusOrder = data.cusOrder
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{
@@ -24,22 +24,24 @@ export default {
         //     com: '',
         //     star: 3,
         //     Oid:'0',
+        //     Did:0,
         // },
         let data = {
             userID: vue.$store.state.userInfo.userID,
             comment: form.com,
             star: form.star,
-            dishID: vue.$store.state.dishInfo.dishID,
+            dishID: form.Did,
             orderID: form.Oid
         }
         axios.post(vue.SERVICE_PATH+'/dish/addcomment',Qs.stringify(data))
             .then(res=>{
+                console.log(res)
                 if(res.data.status === 0){
                     vue.$message.error('服务器错误')
                 }else{
+                    this.mounted(vue)
                     vue.$message.success('评价成功！')
                     vue.dialogVisible = false
-                    this.mounted(vue)
                 }
             })
             .catch(err=>{
@@ -61,7 +63,7 @@ export default {
         //     image: vue.$store.state.dishInfo.picPathList[0],
         //     PS: form.backup
         // }
-        vue.$store.state.loading = vue.$loading({
+        vue.loading = vue.$loading({
             lock: true,
             text: '正在生成支付二维码...',
             spinner: 'el-icon-loading',
@@ -92,7 +94,7 @@ export default {
                 }else{
                     console.log(res)
                     vue.$store.commit('setPayCode',data.url)
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                     vue.timer = setInterval(()=>{
                         axios.get(vue.SERVICE_PATH+'/pay/state',{params:{orderID:oid}})
                             .then(res=>{

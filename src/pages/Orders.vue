@@ -1,8 +1,9 @@
 <template>
     <div class="container">
-        <background show-head="true" class="container-bg">
+        <background :show-head="true" class="container-bg">
             <el-card class="infinite-list-wrapper"
-                     :body-style="{width:'1200px',display:'flex',flexDirection:'column',alignItems:'center'}">
+                     :body-style="{display:'flex',flexDirection:'column',alignItems:'center'}">
+                <div slot="header">订单管理</div>
                 <ul class="list" :infinite-scroll-disabled="false" v-if="hostOrders.length>0">
                     <div v-for="item in hostOrders" class="list-item" :key="item.orderID">
                         <el-card class="ordercard">
@@ -34,7 +35,7 @@
         methods: {
         },
         created() {
-            this.$store.state.loading = this.$loading({
+            this.loading = this.$loading({
                 lock: true,
                 text: '拼命加载中...',
                 spinner: 'el-icon-loading',
@@ -60,11 +61,9 @@
     }
     .infinite-list-wrapper{
         overflow:auto;
-        width: 90%;
+        width: 1200px;
         height: 630px;
         background: rgba(255,255,255,0.7);
-        display: flex;
-        justify-content: center;
     }
     .list{
         width:100%;

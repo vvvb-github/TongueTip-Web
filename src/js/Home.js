@@ -13,7 +13,7 @@ export default {
                     vue.recommendList = data.recommendList
                     vue.rankList = data.rankList
                     vue.hotList = data.hotList
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{
@@ -23,7 +23,7 @@ export default {
     },
     goDish(vue){//@API 6
         //找后端要一下dishID对应的host并存入vue.$store.state.hostInfo
-        axios.get(vue.SERVICE_PATH+'home/hostbydish',{params:{dishID:vue.$store.state.dishInfo.dishID}})
+        axios.get(vue.SERVICE_PATH+'/home/hostbydish',{params:{dishID:vue.$store.state.dishInfo.dishID}})
             .then(res=>{
                 let data = res.data
                 if(data.status === 0){

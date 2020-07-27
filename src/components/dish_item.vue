@@ -3,7 +3,7 @@
         <div style="height: 100%;width: 20%;">
             <img :src="dishInfo.picPath" style="width: 150px;height: 130px;object-fit: fill"/>
         </div>
-        <div style="height: 100%;width: 17%;margin-left: 5%;display: flex;flex-direction: column;justify-content: space-between;align-items: flex-start">
+        <div style="height: 100%;width: 20%;margin-left: 5%;display: flex;flex-direction: column;justify-content: space-between;align-items: flex-start">
             <el-button type="text" class="el-button-dish-name">{{dishInfo.dishName}}</el-button>
             <el-rate
                     v-model="dishInfo.star"
@@ -23,8 +23,10 @@
                     v-for="text in taglst" :key="text">{{text}}</el-tag>
         </div>
         <div style="width: 40%;height: 100%;">
-            <span style="font-size: medium;font-weight: bold;color: dodgerblue">简介</span>
-            <p style="font-size: medium">{{dishInfo.introduction}}</p>
+            <p style="font-size: medium">
+                <span style="font-size: medium;font-weight: bold;color: dodgerblue">简介：</span>
+                {{dishInfo.introduction}}
+            </p>
         </div>
     </div>
 </template>

@@ -44,7 +44,7 @@ export default {
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.checkList = data.checkList
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{

@@ -128,7 +128,7 @@
                                                 score-template="{value}"
                                                 style="margin-bottom: 7px;margin-top:80px">
                                         </el-rate>
-                                        {{item.Time}}
+                                        <span>{{item.Time.replace('T',' ')}}</span>
                                     </div>
                                 </div>
                             </el-card>
@@ -369,7 +369,7 @@
             },
         },
         created() {
-            this.$store.state.loading = this.$loading({
+            this.loading = this.$loading({
                 lock: true,
                 text: '拼命加载中...',
                 spinner: 'el-icon-loading',
@@ -444,8 +444,8 @@
     }
     .image{
         /*设置图片宽度和浏览器宽度一致*/
-        width: 100%;
-        height: 100%;
+        width: 500px;
+        height: 270px;
         object-fit: fill;
     }
     #price{
@@ -466,6 +466,10 @@
     }
     .time{
         margin-left: 7px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: flex-end;
     }
 
 </style>

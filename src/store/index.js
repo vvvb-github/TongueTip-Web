@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
         payCode: '',
-        loading: null,
         imgUrl: 'http://64.64.228.191:8081/api/admin/image',
         userInfo: {
             userID: 0,
@@ -115,7 +115,12 @@ const store = new Vuex.Store({
         setPayCode(state,payload){
             state.payCode = 'http://qr.liantu.com/api.php?text=' + payload
         }
-    }
+    },
+    plugins: [
+        createPersistedState({
+            storage: window.sessionStorage,
+        })
+    ]
 })
 
 export default store

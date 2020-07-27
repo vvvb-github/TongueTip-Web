@@ -250,7 +250,7 @@
             }
         },
         created() {
-            this.$store.state.loading = this.$loading({
+            this.loading = this.$loading({
                 lock: true,
                 text: '拼命加载中...',
                 spinner: 'el-icon-loading',

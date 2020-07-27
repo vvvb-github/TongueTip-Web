@@ -63,10 +63,6 @@
                         this.$router.replace('/')
                         break
                     }
-                    case 'c': {
-                        this.$router.replace('/')
-                        break
-                    }
                     case 'd': {
                         let url = (this.$store.state.userInfo.userType==1? 'home':'dishes')
                         this.$router.replace(url)

@@ -15,7 +15,7 @@ export default {
                         data.dishList[i].picPath = data.dishList[i].picPath.split('+')[0]
                     }
                     vue.dishList = data.dishList
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{

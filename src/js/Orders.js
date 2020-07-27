@@ -4,12 +4,13 @@ export default {
     mounted(vue){//@API 16
         axios.get(vue.SERVICE_PATH+'/order/hostOrder',{params:{hostID:vue.$store.state.hostInfo.hostID}})
             .then(res=>{
+                console.log(res)
                 let data = res.data
                 if(data.status === 0){
                     vue.$message.error('服务器错误！')
                 }else{
                     vue.hostOrders = data.hostOrders
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{
@@ -27,7 +28,7 @@ export default {
                         vue.$message.error('服务器错误！')
                     }else{
                         vue.$message.success('已完成订单！')
-                        this.mounted(vue)
+                        vue.$router.go(0)
                     }
         }).catch(err=>{
             console.log(err)

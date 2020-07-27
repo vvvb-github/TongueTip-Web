@@ -18,7 +18,7 @@ export default {
                     vue.$store.commit('setDishStar',data.star)
                     vue.$store.commit('setDishTagList',data.tagList.split('+'))
                     vue.evaluation = data.evaluations
-                    vue.$store.state.loading.close()
+                    vue.loading.close()
                 }
             })
             .catch(err=>{

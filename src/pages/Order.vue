@@ -24,7 +24,7 @@
                                                 >
 
                                                     <el-card style="width:200px;height:200px" >
-                                                        <img :src="item.image" class="image">
+                                                        <img :src="item.image.split('+')[0]" class="image">
                                                     </el-card>
                                                     <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
                                                         <div style="margin-left: 0px">
@@ -37,8 +37,8 @@
                                                         </div>
                                                         <div style="margin-left: 20px">
                                                             <div style="margin-top: 0px" class="time">{{ item.date }}</div>
-                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID)"
-                                                            :disabled="btnDisabled(item.state)">
+                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID,item.dishID)"
+                                                            :disabled="item.state!=1">
                                                                 {{btnText(item.state)}}
                                                             </el-button>
                                                         </div>
@@ -149,6 +149,7 @@
                     com: '',
                     star: 3,
                     Oid:'0',
+                    Did: 0,
                 },
                 rules: {
                     com: [
@@ -164,15 +165,6 @@
             }
         },
         methods: {
-            //toggleSelection(rows) {
-            //    if (rows) {
-            //        rows.forEach(row => {
-            //            this.$refs.multipleTable.toggleRowSelection(row);
-            //        });
-            //    } else {
-            //        this.$refs.multipleTable.clearSelection();
-            //    }
-            //},
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
@@ -186,6 +178,12 @@
             changeInfo() {
                 this.$refs['comment'].validate((valid) => {
                     if (valid) {
+                        this.loading = this.$loading({
+                            lock: true,
+                            text: '评论提交中...',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         JS.order.comment(this,this.comment);
                         this.dialogVisible=false;
                     }
@@ -195,9 +193,10 @@
                     }
                 });
             },
-            fucA(OrderId){
+            fucA(OrderId,dishID){
                 this.dialogVisible=true;
-                this.comment.Oid=OrderId;
+                this.comment.Oid = OrderId;
+                this.comment.Did = dishID;
             },
             funcDel(OrderId){
                 JS.order.deleteOrder(this,OrderId);
@@ -208,20 +207,6 @@
             cancelPay(){
                 clearInterval(this.timer)
                 this.payShow = false
-            }
-        },
-        created() {
-            this.$store.state.loading = this.$loading({
-                lock: true,
-                text: '拼命加载中...',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
-            JS.order.mounted(this);
-        },
-        computed: {
-            btnDisabled(state) {
-                return state === 1
             },
             btnText(state){
                 if(state === 0){
@@ -232,7 +217,16 @@
                     return '已评价'
                 }
             }
-        }
+        },
+        created() {
+            this.loading = this.$loading({
+                lock: true,
+                text: '拼命加载中...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
+            JS.order.mounted(this);
+        },
     }
 </script>
 

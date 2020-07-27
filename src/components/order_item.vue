@@ -2,36 +2,46 @@
     <div class="container-order">
         <div class="allinfo">
         <div id="pic-order">
-            <img id="pic" :src="orderInfo.picPath"/>
+            <img id="pic" :src="orderInfo.picPath.split('+')[0]"/>
         </div>
         <div class="textinfo">
-            <div id="info-order">
+            <div class="info-order">
                 <div class="ordertext">
-                    <span id="ordertext">菜品：{{orderInfo.dishName}}x{{orderInfo.number}}</span>
+                    <span id="ordertext" style="font-weight: bold;font-family: 'Microsoft YaHei'">菜品：</span>
+                    <span style="font-weight: bold;color: orangered;font-family: 'Microsoft YaHei'">{{orderInfo.dishName}}</span>
+                    <span style="font-weight: bold;font-family: 'Microsoft YaHei';color: purple">x{{orderInfo.number}}</span>
                 </div>
                 <div class="orderprice">
-                    <span id="orderprice">总价：{{orderInfo.price}}</span>
-                </div>
-                <div class="orderID">
-                    <span id="orderID">编号：{{orderInfo.orderID}}</span>
+                    <span style="font-weight: bold;font-family: 'Microsoft YaHei';color: #e60000">
+                        总价：{{orderInfo.prices}}
+                    </span>
                 </div>
                 <div class="orderstatus">
-                    <span id="orderstatus" :style="{color:(orderInfo.orderStatus==0?'rgb(255,0,0)':'green')}">状态：{{orderInfo.orderStatus==0?"未完成":"已完成"}}</span>
+                    <span class="orderstatus-span" :style="{color:(orderInfo.orderStatus===0?'rgb(255,0,0)':'green')}">
+                        状态：{{orderInfo.orderStatus==0?"未完成":"已完成"}}
+                    </span>
                 </div>
             </div>
-            <div id="userinfo-order">
+            <div class="userinfo-order">
                 <div class="userps">
-                    <span id="orderps">备注：{{orderInfo.PS}}</span>
+                    <span style="font-weight: bold;font-family: 'Microsoft YaHei';color: blue">
+                        编号：{{orderInfo.orderID}}
+                    </span>
+                    <p>
+                        <span style="font-weight: bold;font-family: 'Microsoft YaHei'">备注：</span>
+                        {{orderInfo.PS}}
+                    </p>
                 </div>
                 <div class="ordertime">
-                    <span id="ordertime">下单时间：{{orderInfo.date}}</span>
+                    <span style="font-family: 'Microsoft YaHei';font-weight: bold;color: #ffa819">
+                        下单时间：{{orderInfo.date}}
+                    </span>
                 </div>
             </div>
         </div>
         </div>
         <div class="keybutton">
-            <el-button @click="changed" v-show="orderInfo.orderStatus==0"  round id="keybut" >完成订单
-            </el-button>
+            <el-button @click="changed" v-if="orderInfo.orderStatus===0"  round id="keybut" type="primary">完成订单</el-button>
         </div>
     </div>
 </template>
@@ -54,10 +64,6 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '订单已完成!',
-                    });
                     JS.orders.completed(this,this.orderInfo.orderID)
                 }).catch(() => {
                     this.$message({
@@ -103,15 +109,14 @@
         width: 100%;
         height:100%;
     }
-    #info-order{
+    .info-order{
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         width: 90%;
         margin-left: 5%;
-        font-size:3
     }
-    #userinfo-order{
+    .userinfo-order{
         width:100%;
         display: flex;
         flex-direction: column;
@@ -120,22 +125,13 @@
     }
     .userps{
         margin-top: 1%;
-
     }
     .ordertext{
         width:200px;
         display: flex;
         flex-direction: row;
         margin-right: 5%;
-
     }
-.orderID{
-    width: 20%;
-    margin-right: 5%;
-    display: flex;
-    flex-direction: row;
-    color:blue;
-}
     .orderprice{
         width: 20%;
         margin-right: 5%;
@@ -159,10 +155,11 @@
     .keybutton{
         width:20%;
     }
-#keybut{
-    background-color: orangered;
-    color:white;
-    margin-left: 20%;
-}
-
+    #keybut{
+        margin-left: 20%;
+    }
+    .orderstatus-span{
+        font-family: "Microsoft YaHei";
+        font-weight: bold;
+    }
 </style>

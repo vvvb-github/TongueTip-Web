@@ -29,7 +29,8 @@ export default {
             userID: vue.$store.state.userInfo.userID,
             comment: form.com,
             star: form.star,
-            dishID: vue.$store.state.dishInfo.dishID
+            dishID: vue.$store.state.dishInfo.dishID,
+            orderID: form.Oid
         }
         axios.post(vue.SERVICE_PATH+'/dish/addcomment',Qs.stringify(data))
             .then(res=>{
@@ -38,6 +39,7 @@ export default {
                 }else{
                     vue.$message.success('评价成功！')
                     vue.dialogVisible = false
+                    this.mounted(vue)
                 }
             })
             .catch(err=>{

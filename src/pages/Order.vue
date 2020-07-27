@@ -37,8 +37,9 @@
                                                         </div>
                                                         <div style="margin-left: 20px">
                                                             <div style="margin-top: 0px" class="time">{{ item.date }}</div>
-                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID)">
-                                                                评论
+                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID)"
+                                                            :disabled="btnDisabled(item.state)">
+                                                                {{btnText(item.state)}}
                                                             </el-button>
                                                         </div>
                                                     </el-card>
@@ -218,6 +219,20 @@
             });
             JS.order.mounted(this);
         },
+        computed: {
+            btnDisabled(state) {
+                return state === 1
+            },
+            btnText(state){
+                if(state === 0){
+                    return '未完成'
+                }else if(state === 1){
+                    return '评价'
+                }else{
+                    return '已评价'
+                }
+            }
+        }
     }
 </script>
 

@@ -32,7 +32,7 @@
                 </el-form-item>
             </el-form>
             <div style="width: 200px;display: flex;justify-content: space-around">
-                <div class="btn"><el-button type="primary" round @click="submitForm('fd-form')">注册</el-button></div>
+                <div class="btn"><el-button type="primary" round @click="submitForm('fd-form')">确定</el-button></div>
                 <div class="btn"><el-button round @click="resetForm('fd-form')">重置</el-button></div>
             </div>
             <div style="display: flex;justify-content: center;align-items: center">

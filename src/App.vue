@@ -17,7 +17,7 @@
                     .then(res=>{
                         if(res.data.status === 0){
                             this.$message.error('已与服务器断开连接！')
-                        }else{
+                        }else if(res.data.have === 1){
                             if(this.$store.state.userInfo.userType === 1){
                                 this.$message.info('您有新完成的订单！快去领取吧！')
                             }else{

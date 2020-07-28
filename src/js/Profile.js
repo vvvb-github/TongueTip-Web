@@ -120,6 +120,7 @@ export default {
                         vue.$store.commit('setUserPhone',arg)
                     }else if(id === 4){
                         vue.$store.commit('setUserIcon',arg)
+                        vue.editAvatar = false
                     }
                     vue.loading.close()
                     vue.$message.success('修改成功！')

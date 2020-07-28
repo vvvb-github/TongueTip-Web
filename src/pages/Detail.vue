@@ -114,7 +114,7 @@
                                     <div class="head">
                                         {{item.Name}}
                                     </div>
-                                    <el-card style="width: 55%;height:100%;
+                                    <el-card style="width: 50%;height:100%;
                                     background: linear-gradient(to top left,rgba(161,242,236,0.7),rgba(237,214,234,0.7))"
                                              :body-style="{height:'100%'}">
                                         {{item.Rate}}
@@ -128,7 +128,7 @@
                                                 score-template="{value}"
                                                 style="margin-bottom: 7px;margin-top:80px">
                                         </el-rate>
-                                        <span>{{item.Time.replace('T',' ')}}</span>
+                                        <span>{{item.Time.replace('T',' ').replace('-','.').replace('-','.')}}</span>
                                     </div>
                                 </div>
                             </el-card>

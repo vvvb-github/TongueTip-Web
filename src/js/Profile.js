@@ -94,31 +94,35 @@ export default {
                 vue.$message.error('服务器错误！')
             })
     },
-    editUserInfo(vue,newInfo) {//@API 3
-        // newInfo: {
-        //     userName: '',
-        //     userPhone: '',
-        //     picPath: '' 允许空
-        // },
+    editUserInfo(vue,id,arg) {//@API 3
+        vue.loading = vue.$loading({
+            lock: true,
+            text: '拼命加载中...',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
+        });
         let data = {
             userID: vue.$store.state.userInfo.userID,
-            userName: newInfo.userName,
-            userPhone: newInfo.userPhone,
-            userPassword: newInfo.userPassword,
-            picPath: newInfo.picPath
+            id: id,
+            arg: arg
         }
         axios.post(vue.SERVICE_PATH+'/profile/edit',Qs.stringify(data))
             .then(res=>{
                 if(res.data.status === 0){
                     vue.$message.error('服务器错误！')
+                }else if(res.data.status === 2){
+                    vue.loading.close()
+                    vue.$message.warning('手机号重复！')
                 }else{
-                    vue.$message.success('修改成功！')
-                    if(newInfo.picPath != '') {
-                        vue.$store.commit('setUserIcon', newInfo.picPath)
+                    if(id === 1){
+                        vue.$store.commit('setUserName',arg)
+                    }else if(id === 2){
+                        vue.$store.commit('setUserPhone',arg)
+                    }else if(id === 4){
+                        vue.$store.commit('setUserIcon',arg)
                     }
-                    vue.$store.commit('setUserName',newInfo.userName)
-                    vue.$store.commit('setUserPhone',newInfo.userPhone)
-                    vue.inEditing = false
+                    vue.loading.close()
+                    vue.$message.success('修改成功！')
                 }
             })
             .catch(err=>{

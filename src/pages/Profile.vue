@@ -6,39 +6,57 @@
                 <img :src="this.$store.state.userInfo.iconPath" style="width: 350px;height: 400px;object-fit: cover"/>
             </el-card>
             <el-card :body-style="info_style" style="width: 420px;height: 450px;background: rgba(255,255,255,0.7)" shadow="hover">
-                <div class="div-info" v-if="!inEditing">
-                    <el-button icon="el-icon-edit" style="margin-bottom: 5%" type="primary"
-                               @click="inEditing=true">编辑</el-button>
-                    <span style="color: rebeccapurple;font-size: xx-large;font-family: 'Microsoft YaHei';margin-bottom: 20px">
-                        {{this.$store.state.userInfo.userName}}
-                    </span>
-                    <span class="info-item">手机号：{{this.$store.state.userInfo.userPhone}}</span><br>
-                    <span class="info-item">身份：{{this.$store.state.userInfo.userType==1? '顾客':'商家'}}</span>
-                </div>
-                <div class="div-info" v-else>
-                    <div style="display: flex;justify-content: center">
-                        <el-button icon="el-icon-check" type="success" circle @click="edit_info"></el-button>
-                        <el-button icon="el-icon-delete" type="danger" circle @click="inEditing=false;"></el-button>
+                <div class="div-info">
+                    <div class="div-text" v-if="editName">
+                        <el-input placeholder="请输入如新昵称" v-model="newName" v-if="editName"></el-input>
+                        <el-button icon="el-icon-check" type="success" circle @click="edit(1)"></el-button>
+                        <el-button icon="el-icon-delete" type="danger" circle @click="abd(1)"></el-button>
                     </div>
-                    <el-form :model="editInfo" ref="editInfo" :rules="rules" style="margin-top: 20px">
-                        <el-form-item class="edit-item" prop="userName">
-                            <el-input placeholder="请输入昵称" v-model="editInfo.userName"></el-input>
-                        </el-form-item>
-                        <el-form-item class="edit-item" prop="userPhone">
-                            <el-input placeholder="请输入手机号" v-model="editInfo.userPhone" maxlength="11"></el-input>
-                        </el-form-item>
-                        <el-form-item class="edit-item" prop="userPassword">
-                            <el-input placeholder="请设置密码" v-model="editInfo.userPassword" show-password maxlength="20"></el-input>
-                        </el-form-item>
-                        <el-form-item class="edit-item">
-                            <el-upload :action="this.$store.state.imgUrl" :auto-upload="false" :limit="1" ref="upload-add-avatar"
-                                       :on-exceed="handleExceed" :before-upload="handleBefore"
-                            :on-success="handleSuccess" :on-error="handleError">
-                                <el-button size="small" type="primary">点击上传头像</el-button>
-                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500KB</div>
-                            </el-upload>
-                        </el-form-item>
-                    </el-form>
+                    <div v-else class="div-text">
+                        <span style="font-size: xx-large;color: purple;font-family: 'Microsoft YaHei';font-weight: bold">
+                            {{this.$store.state.userInfo.userName}}
+                        </span>
+                        <el-button icon="el-icon-edit" circle type="text" @click="editName=true"></el-button>
+                    </div>
+                    <div v-if="editPhone" class="div-text">
+                        <el-input maxlength="11" placeholder="请输入如新手机号" v-model="newPhone" v-if="editPhone"></el-input>
+                        <el-button icon="el-icon-check" type="success" circle @click="edit(2)"></el-button>
+                        <el-button icon="el-icon-delete" type="danger" circle @click="abd(2)"></el-button>
+                    </div>
+                    <div v-else class="div-text">
+                        <span class="span-text">手机号：{{this.$store.state.userInfo.userPhone}}</span>
+                        <el-button icon="el-icon-edit" circle type="text" @click="editPhone=true"></el-button>
+                    </div>
+                    <div class="div-text">
+                        <span class="span-text">身份：{{this.$store.state.userInfo.userType==1? '顾客':'商家'}}</span>
+                    </div>
+                    <div class="div-text" v-if="editPass">
+                        <el-input maxlength="11" placeholder="请输入如新密码" v-model="newPass" v-if="editPass"></el-input>
+                        <el-button icon="el-icon-check" type="success" circle @click="edit(3)"></el-button>
+                        <el-button icon="el-icon-delete" type="danger" circle @click="abd(3)"></el-button>
+                    </div>
+                    <div v-else class="div-text">
+                        <span style="cursor: pointer;color: dodgerblue" class="span-text" circle type="text" @click="editPass=true">
+                            修改密码
+                        </span>
+                    </div>
+                    <div v-if="editAvatar">
+                        <el-upload :action="this.$store.state.imgUrl" list-type="text" :auto-upload="false" :limit="1"
+                                   :on-exceed="handleExceed" ref="upload-avatar" :before-upload="handleBefore" :on-success="handleSuccess"
+                                   :on-error="handleError">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500KB</div>
+                        </el-upload>
+                        <div style="display: flex;justify-content: space-around;align-items: center;margin-top: 20px">
+                            <el-button icon="el-icon-check" type="success" circle @click="edit(4)"></el-button>
+                            <el-button icon="el-icon-delete" type="danger" circle @click="abd(4)"></el-button>
+                        </div>
+                    </div>
+                    <div v-else class="div-text">
+                        <span style="cursor: pointer;color: dodgerblue" class="span-text" circle type="text" @click="editAvatar=true">
+                            修改头像
+                        </span>
+                    </div>
                 </div>
             </el-card>
         </div>
@@ -62,45 +80,17 @@
                     alignItems: 'center',
                     padding: '10%'
                 },
-                inEditing: false,
-                editInfo: {
-                    userName: '',
-                    userPhone: '',
-                    userPassword: '',
-                    picPath: ''
-                },
-                rules: {
-                    userName: [
-                        { required: true, message: '请输入昵称', trigger: 'blur' },
-                        { min: 1, max: 20, message: '长度在1到20个字符', trigger: 'blur' }
-                    ],
-                    userPhone: [
-                        { required: true, message: '请输入手机号', trigger: 'blur' },
-                        { min: 11, max: 11, message: '请输入正确手机号', trigger: 'blur' }
-                    ],
-                    userPassword: [
-                        { required: true, message: '请输入密码', trigger: 'blur' },
-                        { min: 6, max: 20, message: '密码长度必须在6到20', trigger: 'blur' }
-                    ],
-                }
+                editName: false,
+                newName: this.$store.state.userInfo.userName,
+                editPhone: false,
+                newPhone: this.$store.state.userInfo.userPhone,
+                editPass: false,
+                newPass: '',
+                editAvatar: false,
+                newAvatar: '',
             }
         },
         methods: {
-            edit_info() {
-                this.$refs['editInfo'].validate((valid) => {
-                    if (valid) {
-                        if(this.$refs['upload-add-avatar'].$children[0].fileList.length > 0) {
-                            this.$refs['upload-add-avatar'].submit()
-                        }else {
-                            JS.profile.editUserInfo(this, this.editInfo)
-                        }
-                    }
-                    else {
-                        this.$message.error('提交出错！')
-                        return false;
-                    }
-                });
-            },
             handleExceed() {
                 this.$message.error('只能上传1张图片！')
             },
@@ -119,8 +109,8 @@
             },
             handleSuccess(res){
                 if(res.status === 1){
-                    this.editInfo.picPath = res.url
-                    JS.profile.editUserInfo(this,this.editInfo)
+                    this.newAvatar = res.url
+                    JS.profile.editUserInfo(this,4,this.newAvatar)
                 }else{
                     console.log(res)
                     this.$message.error('图片上传出错！')
@@ -129,6 +119,39 @@
             handleError(err){
                 console.log(err)
                 this.$message.error('图片上传出错！')
+            },
+            edit(id){
+                if(id == 1){
+                    JS.profile.editUserInfo(this,1,this.newName)
+                    this.editName = false
+                }else if(id === 2){
+                    JS.profile.editUserInfo(this,2,this.newPhone)
+                    this.editPhone = false
+                }else if(id === 3){
+                    JS.profile.editUserInfo(this,3,this.newPass)
+                    this.editPass = false
+                }else{
+                    if(this.$refs['upload-avatar'].$children[0].fileList.length==0){
+                        this.$message.error('请上传头像！')
+                    }else{
+                        this.$refs['upload-avatar'].submit()
+                    }
+                }
+            },
+            abd(id){
+                if(id == 1){
+                    this.newName = this.$store.state.userInfo.userName
+                    this.editName = false
+                }else if(id === 2){
+                    this.newPhone = this.$store.state.userInfo.userPhone
+                    this.editPhone = false
+                }else if(id === 3){
+                    this.newPass = ''
+                    this.editPass = false
+                }else{
+                    this.newAvatar = ''
+                    this.editAvatar = false
+                }
             }
         }
     }
@@ -151,9 +174,15 @@
         justify-content: flex-start;
         margin: 5%;
     }
-    .info-item{
-        font-size: larger;
-        font-weight: bold;
+    .span-text{
         font-family: "Microsoft YaHei";
+        font-size: larger;
+    }
+    .div-text{
+        width: 250px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: flex-start;
     }
 </style>

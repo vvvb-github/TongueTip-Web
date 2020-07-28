@@ -6,11 +6,7 @@
             <el-radio :label="1">顾客</el-radio>
             <el-radio :label="2">商家</el-radio>
         </el-radio-group>
-        <div class="item">
-            <el-button class="item-c" style="color: black" type="text" disabled>还没注册？</el-button>
-            <el-button class="item-c" type="text" @click="register">点击注册</el-button>
-        </div>
-        <div class="item" style="margin-top: 1%">
+        <div class="item" style="margin: 20px">
             <div class="btn-container">
                 <el-button id="button-login" class="item-c" type="primary" round @click="login">登录</el-button>
             </div>
@@ -18,8 +14,10 @@
                 <el-button class="item-c" round @click="clear">重置</el-button>
             </div>
         </div>
-        <el-alert v-if="error_phone!=''" type="error" center :title="error_phone" show-icon :closable="false" effect="dark"/>
-        <el-alert v-if="error_pass!=''" type="error" center :title="error_pass" show-icon :closable="false" effect="dark"/>
+        <div class="item">
+            <el-button class="item-c" style="color: black" type="text" disabled>还没注册？</el-button>
+            <el-button class="item-c" type="text" @click="register">点击注册</el-button>
+        </div>
     </div>
 </template>
 

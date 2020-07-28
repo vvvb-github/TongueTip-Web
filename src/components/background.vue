@@ -60,6 +60,7 @@
                         break
                     }
                     case 'b': {
+                        this.$store.state.userInfo.userID = 0
                         this.$router.replace('/')
                         break
                     }
@@ -81,7 +82,7 @@
                 this.$router.replace('profile')
             }
         },
-        mounted() {
+        created() {
             this.timer = setInterval(this.change,10000)
         },
         beforeDestroy() {

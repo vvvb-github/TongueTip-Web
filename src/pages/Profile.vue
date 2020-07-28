@@ -2,29 +2,25 @@
     <background :show-head="true">
         <div class="el-card-basic">
             <el-card :body-style="{height: '100%',display: 'flex',flexDirection: 'column',alignItems: 'center'}"
-                     style="width: 40%;height: 92%;background: rgba(255,255,255,0.7)" shadow="hover">
-                <div style="width: 90%;height: 65%">
-                    <img :src="this.$store.state.userInfo.iconPath" style="width: 350px;height: 400px;object-fit: cover"/>
-                </div>
-                <div style="width: 90%;height: 30%;display: flex;justify-content: center;align-items: center">
-                    <span style="color: rebeccapurple;font-size: xx-large;font-family: 'Microsoft YaHei'">{{this.$store.state.userInfo.userName}}</span>
-                </div>
+                     style="width: 420px;height: 450px;background: rgba(255,255,255,0.7)" shadow="hover">
+                <img :src="this.$store.state.userInfo.iconPath" style="width: 350px;height: 400px;object-fit: cover"/>
             </el-card>
-            <el-card :body-style="info_style" style="width: 40%;height: 92%;background: rgba(255,255,255,0.7)" shadow="hover">
+            <el-card :body-style="info_style" style="width: 420px;height: 450px;background: rgba(255,255,255,0.7)" shadow="hover">
                 <div class="div-info" v-if="!inEditing">
-                    <el-button icon="el-icon-edit" style="background-color: orangered;margin-bottom: 5%"
+                    <el-button icon="el-icon-edit" style="margin-bottom: 5%" type="primary"
                                @click="inEditing=true">编辑</el-button>
+                    <span style="color: rebeccapurple;font-size: xx-large;font-family: 'Microsoft YaHei';margin-bottom: 20px">
+                        {{this.$store.state.userInfo.userName}}
+                    </span>
                     <span class="info-item">手机号：{{this.$store.state.userInfo.userPhone}}</span><br>
                     <span class="info-item">身份：{{this.$store.state.userInfo.userType==1? '顾客':'商家'}}</span>
-                    <div style="width: 90%;height: 70%;margin-top: 5%;">
-                    </div>
                 </div>
                 <div class="div-info" v-else>
                     <div style="display: flex;justify-content: center">
                         <el-button icon="el-icon-check" type="success" circle @click="edit_info"></el-button>
                         <el-button icon="el-icon-delete" type="danger" circle @click="inEditing=false;"></el-button>
                     </div>
-                    <el-form :model="editInfo" ref="editInfo" :rules="rules">
+                    <el-form :model="editInfo" ref="editInfo" :rules="rules" style="margin-top: 20px">
                         <el-form-item class="edit-item" prop="userName">
                             <el-input placeholder="请输入昵称" v-model="editInfo.userName"></el-input>
                         </el-form-item>
@@ -154,5 +150,10 @@
         align-items: center;
         justify-content: flex-start;
         margin: 5%;
+    }
+    .info-item{
+        font-size: larger;
+        font-weight: bold;
+        font-family: "Microsoft YaHei";
     }
 </style>

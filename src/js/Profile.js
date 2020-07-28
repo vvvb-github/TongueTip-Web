@@ -66,11 +66,38 @@ export default {
                 vue.$message.error('服务器错误！')
             })
     },
+    findPass(vue,form){//@API 23
+        // form: {
+        //     phone: '',
+        //     password: '',
+        //     repeatPassword: '',
+        //     type: 1,
+        // },
+        let data = {
+            userPhone: form.phone,
+            password: form.password,
+            type: form.type
+        }
+        axios.post(vue.SERVICE_PATH+'/profile/find',Qs.stringify(data))
+            .then(res=>{
+                if(res.data.status === 0){
+                    vue.$message.error('服务器错误！')
+                }else if(res.data.status === 2){
+                    vue.$message.warning('用户不存在！')
+                }else{
+                    vue.$message.success('修改密码成功！')
+                    vue.lg = true
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+                vue.$message.error('服务器错误！')
+            })
+    },
     editUserInfo(vue,newInfo) {//@API 3
         // newInfo: {
         //     userName: '',
         //     userPhone: '',
-        //     userPassword: ',
         //     picPath: '' 允许空
         // },
         let data = {

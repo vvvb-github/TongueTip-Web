@@ -1,104 +1,92 @@
 <template>
     <div class="container">
-        <background style="width: 45%;height: 100%" :show-head="true">
-            <el-card class="box-card" style="width:80%;height:630px;background: rgba(255,255,255,0.7)">
-                <el-container style="height: 600px">
-                    <el-main>
-                        <el-tabs v-model="activeName" @tab-click="handleClick">
-
-                            <el-tab-pane label="已支付" name="first">
-                                <el-table
-                                        ref="multipleTable"
-                                        height="480"
-                                        :data="tableData"
-                                        tooltip-effect="dark"
-                                        style="width: 100%;height:430px"
-                                        @selection-change="handleSelectionChange"
-                                        v-if="cusOrder.length>0"
-                                        >
-                                    <el-table-column prop="date" label="订单列表" width="1000px">
-                                        <el-collapse v-model="activeNames" @change="handleChange"
-                                                     v-for="item in cusOrder" :key="item.orderID">
-                                            <el-collapse-item title=" 订单详情" name="1">
-                                                <el-card :body-style="{ padding: '20px',display:'flex'}"
-                                                >
-
-                                                    <el-card style="width:200px;height:200px" >
-                                                        <img :src="item.image.split('+')[0]" class="image">
-                                                    </el-card>
-                                                    <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
-                                                        <div style="margin-left: 0px">
-                                                            <div style="margin-top: 0px">{{item.dishName}}</div>
-                                                            <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
-                                                            <div style="margin-top:70px">总价：{{item.price}}元</div>
-                                                        </div>
-                                                        <div style="margin-left:250px">
-                                                            <el-button style="margin-top: 133px" type="primary" class="button clearfix">举报</el-button>
-                                                        </div>
-                                                        <div style="margin-left: 20px">
-                                                            <div style="margin-top: 0px" class="time">{{ item.date }}</div>
-                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix" @click="fucA(item.orderID,item.dishID)"
-                                                            :disabled="item.state!=1">
-                                                                {{btnText(item.state)}}
-                                                            </el-button>
-                                                        </div>
-                                                    </el-card>
-                                                </el-card>
-                                            </el-collapse-item>
-                                        </el-collapse>
-                                    </el-table-column>
-                                </el-table>
-                                <span v-else style="color: black;font-size: large;font-family: 'Microsoft YaHei'">
-                                    暂无订单
-                                </span>
-                            </el-tab-pane>
-
-                            <el-tab-pane label="未处理" name="second">
-                                <el-table
-                                        ref="multipleTable"
-                                        :data="tableData"
-                                        tooltip-effect="dark"
-                                        height="480"
-                                        style="width: 100%;height:430px"
-                                        @selection-change="handleSelectionChange"
-                                v-if="cusOrderNotPay.length>0">
-                                    <el-table-column prop="date" label="订单列表" width="1000px">
-                                        <el-collapse v-model="activeNames" @change="handleChange"
-                                                     v-for="item in cusOrderNotPay" :key="item.orderID">
-                                            <el-collapse-item title=" 订单详情" name="1">
-                                                <el-card :body-style="{ padding: '20px',display:'flex'}"  >
-                                                    <el-card style="width:200px;height:200px" >
-                                                        <img :src="item.image" class="image">
-                                                    </el-card>
-                                                    <el-card style="height:200px;width: 800px" :body-style="{display:'flex',justify:'space-between'}" >
-                                                        <div style="margin-left: 0px">
-                                                            <div style="margin-top: 0px">{{item.dishName}}</div>
-                                                            <div style="margin-top:30px;width: 100px">份数:{{item.number}}份</div>
-                                                            <div style="margin-top:70px">总价：{{item.price}}元</div>
-                                                        </div>
-                                                        <div style="margin-left:230px">
-                                                            <el-button style="margin-top: 133px" type="primary" class="button clearfix"
-                                                            @click="funcDel(item.orderID)">取消订单</el-button>
-                                                        </div>
-                                                        <div style="margin-left: 20px">
-                                                            <div style="margin-top: 0px" class="time">{{item.date}}</div>
-                                                            <el-button style="margin-top: 110px" type="primary" class="button clearfix"
-                                                            @click="funcPay(item.orderID)">支付</el-button>
-                                                        </div>
-
-                                                    </el-card>
-                                                </el-card>
-                                            </el-collapse-item>
-                                        </el-collapse>
-                                    </el-table-column>
-                                </el-table>
-                                <span v-else style="color: black;font-size: large;font-family: 'Microsoft YaHei'">
-                                    暂无订单
-                                </span>
-                            </el-tab-pane>
-                        </el-tabs>
-                    </el-main>
-                </el-container>
+        <background style="width: 45%;height: 100%;" :show-head="true">
+            <el-card style="width: 1200px;height: 630px;background: rgba(255,255,255,0.7)">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="已支付" name="first">
+                        <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 1100px;height: 500px;display: flex;flex-wrap: wrap">
+                            <el-card style="width: 1070px;height: 200px;margin-bottom: 10px" shadow="hover"
+                                     v-for="order in cusOrder" :key="order.orderID">
+                                <div style="display: flex;">
+                                    <img :src="order.image.split('+')[0]" style="width: 200px;height: 160px;object-fit: fill"/>
+                                    <div style="width: 350px;height: 160px;display: flex;margin-left: 20px;
+                                    flex-direction: column;justify-content: space-between">
+                                        <span style="font-weight: bold;font-size: x-large;font-family: 'Microsoft YaHei';color: orangered">
+                                            {{order.dishName}}
+                                            <span style="color: purple;font-family: 'Microsoft YaHei';font-weight: bold;font-size: large">
+                                                X{{order.number}}
+                                            </span>
+                                        </span>
+                                        <span style="color: blue;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            订单号：{{order.orderID}}
+                                        </span>
+                                        <span style="color: #e60000;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            总价：{{order.prices}}
+                                        </span>
+                                        <span style="color: #ffa819;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            下单时间：{{order.date}}
+                                        </span>
+                                    </div>
+                                    <div style="width: 250px;height: 160px">
+                                        <p>
+                                            <span style="font-family: 'Microsoft YaHei';font-weight: bold;color: dodgerblue">备注：</span>
+                                            {{order.PS}}
+                                        </p>
+                                    </div>
+                                    <div style="width: 200px;height: 160px;display: flex;justify-content: center;align-items: center">
+                                        <el-button type="primary"
+                                                   :disabled="order.state!=1" @click="fucA(order.orderID,order.dishID)">
+                                            {{btnText(order.state)}}
+                                        </el-button>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </ul>
+                    </el-tab-pane>
+                    <el-tab-pane label="未处理" name="second">
+                        <ul :infinite-scroll-disabled="false" style="overflow: auto;width: 1100px;height: 500px;display: flex;flex-wrap: wrap">
+                            <el-card style="width: 1070px;height: 200px;margin-bottom: 10px" shadow="hover"
+                                     v-for="order in cusOrderNotPay" :key="order.orderID">
+                                <div style="display: flex;">
+                                    <img :src="order.image.split('+')[0]" style="width: 200px;height: 160px;object-fit: fill"/>
+                                    <div style="width: 350px;height: 160px;display: flex;margin-left: 20px;
+                                    flex-direction: column;justify-content: space-between">
+                                        <span style="font-weight: bold;font-size: x-large;font-family: 'Microsoft YaHei';color: orangered">
+                                            {{order.dishName}}
+                                            <span style="color: purple;font-family: 'Microsoft YaHei';font-weight: bold;font-size: large">
+                                                X{{order.number}}
+                                            </span>
+                                        </span>
+                                        <span style="color: blue;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            订单号：{{order.orderID}}
+                                        </span>
+                                        <span style="color: #e60000;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            总价：{{order.price}}
+                                        </span>
+                                        <span style="color: #ffa819;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                            下单时间：{{order.date}}
+                                        </span>
+                                    </div>
+                                    <div style="width: 250px;height: 160px">
+                                        <p>
+                                            <span style="font-family: 'Microsoft YaHei';font-weight: bold;color: dodgerblue">备注：</span>
+                                            {{order.PS}}
+                                        </p>
+                                    </div>
+                                    <div style="width: 200px;height: 160px;
+                                    display: flex;flex-direction: column;justify-content: space-around;align-items: center">
+                                        <el-button type="success" @click="funcPay(order.orderID)">
+                                            支付
+                                        </el-button>
+                                        <el-button @click="funcDel(order.orderID)">
+                                            删除
+                                        </el-button>
+                                    </div>
+                                </div>
+                            </el-card>
+                        </ul>
+                    </el-tab-pane>
+                </el-tabs>
             </el-card>
         </background>
         <el-dialog title="评论栏" :visible.sync="dialogVisible">
@@ -165,9 +153,6 @@
             }
         },
         methods: {
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
             handleClick(tab, event) {
                 console.log(tab, event);
             },
@@ -235,31 +220,4 @@
         width: 100%;
         height: 100%;
     }
-
-    .time {
-        font-size: 13px;
-        color: #999;
-    }
-
-    .button {
-
-    }
-
-    .image {
-        width: 100%;
-        display: block;
-    }
-
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-
-    .clearfix:after {
-        clear: both
-    }
-
-
-
 </style>

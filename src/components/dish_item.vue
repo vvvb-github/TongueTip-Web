@@ -18,20 +18,25 @@
             <span class="span-price">￥ {{dishInfo.price}}</span>
             <span style="font-size: medium;font-family: 'Microsoft YaHei';color: #ffa819">销量：{{dishInfo.sales}}</span>
         </div>
-        <div style="width: 20%;height: 90%;margin-left: 5%;display: flex;align-content: center">
+        <div style="width: 20%;height: 90%;margin-left: 5%;display: flex;align-content: center;flex-wrap: wrap">
             <el-tag :type="colors[Math.floor(5*Math.random())]" class="dish-tags"
                     v-for="text in taglst" :key="text">{{text}}</el-tag>
         </div>
-        <div style="width: 40%;height: 100%;">
+        <div style="width: 30%;height: 100%;">
             <p style="font-size: medium">
                 <span style="font-size: medium;font-weight: bold;color: dodgerblue">简介：</span>
                 {{dishInfo.introduction}}
             </p>
         </div>
+        <div style="width: 10%;height: 100%;display: flex;align-items: center;justify-content: center">
+            <el-button type="danger" circle icon="el-icon-delete" @click="delDish"></el-button>
+        </div>
     </div>
 </template>
 
 <script>
+    import JS from "@/JS";
+
     export default {
         name: "dish_item",
         data() {
@@ -50,6 +55,9 @@
                 this.$store.commit('setDishID',this.dishInfo.dishID)
                 this.$router.replace('detail')
             },
+            delDish() {
+                JS.dishes.delDish(this,this.dishInfo.dishID)
+            }
         },
         computed: {
             taglst() {

@@ -246,9 +246,9 @@
                 total_star: this.$store.state.dishInfo.star,
                 dish_form: {
                     picPathList:[],//菜的图片，还不知道怎么弄
-                    dishName: '',
-                    price:null,
-                    tags:this.$store.state.dishInfo.tags,
+                    dishName: this.$store.state.dishInfo.dishName,
+                    price: this.$store.state.dishInfo.price,
+                    tags: this.$store.state.dishInfo.tags,
                 },
                 customer_form:{
                     num:1,

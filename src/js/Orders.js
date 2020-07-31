@@ -27,8 +27,8 @@ export default {
                     if(res.data.status === 0){
                         vue.$message.error('服务器错误！')
                     }else{
-                        vue.$message.success('已完成订单！')
                         vue.$router.go(0)
+                        vue.$message.success('已完成订单！')
                     }
         }).catch(err=>{
             console.log(err)

@@ -114,6 +114,9 @@ const store = new Vuex.Store({
         },
         setPayCode(state,payload){
             state.payCode = 'http://qr.liantu.com/api.php?text=' + payload
+        },
+        clearOrder(state){
+            state.orderInfo = []
         }
     },
     plugins: [

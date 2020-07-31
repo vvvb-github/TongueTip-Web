@@ -91,11 +91,12 @@ export default {
     delDish(vue,dishID) {
         axios.get(vue.SERVICE_PATH+'/dish/delete',{params:{dishID:dishID}})
             .then(res=>{
+                console.log(res)
                 if(res.data.status === 0){
                     vue.$message.error('服务器错误！')
                 }else{
-                    vue.$message.success('删除菜品成功！')
                     vue.$router.go(0)
+                    vue.$message.success('删除菜品成功！')
                 }
             })
             .catch(err=>{

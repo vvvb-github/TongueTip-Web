@@ -17,13 +17,13 @@
                                                 X{{order.number}}
                                             </span>
                                         </span>
-                                        <span style="color: blue;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
-                                            订单号：{{order.orderID}}
-                                        </span>
-                                        <span style="color: #e60000;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                        <span style="color: #e60000;font-size: larger;font-weight: bold;font-family: 'Microsoft YaHei'">
                                             总价：{{order.prices}}
                                         </span>
-                                        <span style="color: #ffa819;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                        <span style="font-size: medium;font-family: 'Microsoft YaHei'">
+                                            订单号：{{order.orderID}}
+                                        </span>
+                                        <span style="font-size: medium;font-family: 'Microsoft YaHei'">
                                             下单时间：{{order.date}}
                                         </span>
                                     </div>
@@ -57,34 +57,33 @@
                                                 X{{order.number}}
                                             </span>
                                         </span>
-                                        <span style="color: blue;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
-                                            订单号：{{order.orderID}}
-                                        </span>
-                                        <span style="color: #e60000;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                        <span style="color: #e60000;font-size: larger;font-weight: bold;font-family: 'Microsoft YaHei'">
                                             总价：{{order.price}}
                                         </span>
-                                        <span style="color: #ffa819;font-size: medium;font-weight: bold;font-family: 'Microsoft YaHei'">
+                                        <span style="font-size: medium;font-family: 'Microsoft YaHei'">
+                                            订单号：{{order.orderID}}
+                                        </span>
+                                        <span style="font-size: medium;font-family: 'Microsoft YaHei'">
                                             下单时间：{{order.date}}
                                         </span>
                                     </div>
-                                    <div style="width: 250px;height: 160px">
+                                    <div style="width: 350px;height: 160px">
                                         <p>
                                             <span style="font-family: 'Microsoft YaHei';font-weight: bold;color: dodgerblue">备注：</span>
                                             {{order.PS}}
                                         </p>
                                     </div>
-                                    <div style="width: 200px;height: 160px;
+                                    <div style="width: 100px;height: 160px;
                                     display: flex;flex-direction: column;justify-content: space-around;align-items: center">
-                                        <el-button type="success" @click="funcPay(order.orderID)">
-                                            支付
-                                        </el-button>
-                                        <el-button @click="funcDel(order.orderID)">
-                                            删除
-                                        </el-button>
+                                        <el-button @click="funcDel(order.orderID)" circle icon="el-icon-delete" type="danger"></el-button>
                                     </div>
                                 </div>
                             </el-card>
                         </ul>
+                    </el-tab-pane>
+                    <el-tab-pane style="margin-left: 1000px" :disabled="true" v-if="activeName=='second'">
+                        <el-button slot="label" type="success" :disabled="cusOrderNotPay.length==0"
+                        @click="funcPay">支付</el-button>
                     </el-tab-pane>
                 </el-tabs>
             </el-card>
@@ -109,7 +108,7 @@
                 <el-button type="primary" @click="changeInfo()">确 定</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="微信支付" :visible="payShow">
+        <el-dialog title="微信支付" :visible="payShow" width="350px" :show-close="false">
             <img :src="this.$store.state.payCode" />
             <div slot="footer" class="dialog-footer">
                 <el-button @click="cancelPay">放弃支付</el-button>
@@ -156,8 +155,7 @@
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-            handleChange(val)
-            {
+            handleChange(val) {
                 console.log(val) ;
             },
             changeInfo() {
@@ -186,8 +184,8 @@
             funcDel(OrderId){
                 JS.order.deleteOrder(this,OrderId);
             },
-            funcPay(OrderId){
-                JS.order.pay(this,OrderId);
+            funcPay(){
+                JS.order.pay(this);
             },
             cancelPay(){
                 clearInterval(this.timer)

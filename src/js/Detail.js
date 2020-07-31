@@ -73,7 +73,7 @@ export default {
             number: form.num,
             price: form.total_price,
             dishID: vue.$store.state.dishInfo.dishID,
-            orderID: now.toString()+vue.$store.state.userInfo.userID.toString(),
+            orderID: now.toString()+vue.$store.state.userInfo.userID.toString()+vue.$store.state.dishInfo.dishID.toString(),
             image: vue.$store.state.dishInfo.picPathList[0],
             PS: form.backup
         }

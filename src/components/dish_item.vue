@@ -1,9 +1,10 @@
 <template>
-    <div class="container-dish" @click="goDetail" style="cursor: pointer">
-        <div style="height: 100%;width: 20%;">
+    <div class="container-dish">
+        <div style="height: 100%;width: 20%;cursor: pointer" @click="goDetail">
             <img :src="dishInfo.picPath" style="width: 150px;height: 130px;object-fit: fill"/>
         </div>
-        <div style="height: 100%;width: 20%;margin-left: 5%;display: flex;flex-direction: column;justify-content: space-between;align-items: flex-start">
+        <div style="height: 100%;width: 20%;margin-left: 5%;display: flex;flex-direction: column;
+            justify-content: space-between;align-items: flex-start;cursor:pointer;" @click="goDetail">
             <el-button type="text" class="el-button-dish-name">{{dishInfo.dishName}}</el-button>
             <el-rate
                     v-model="dishInfo.star"
@@ -18,18 +19,19 @@
             <span class="span-price">￥ {{dishInfo.price}}</span>
             <span style="font-size: medium;font-family: 'Microsoft YaHei';color: #ffa819">销量：{{dishInfo.sales}}</span>
         </div>
-        <div style="width: 20%;height: 90%;margin-left: 5%;display: flex;align-content: center;flex-wrap: wrap">
+        <div style="width: 20%;height: 90%;margin-left: 5%;display: flex;align-content: center;flex-wrap: wrap;cursor:pointer;"
+             @click="goDetail">
             <el-tag :type="colors[Math.floor(5*Math.random())]" class="dish-tags"
                     v-for="text in taglst" :key="text">{{text}}</el-tag>
         </div>
-        <div style="width: 30%;height: 100%;">
+        <div style="width: 30%;height: 100%;cursor:pointer;" @click="goDetail">
             <p style="font-size: medium">
                 <span style="font-size: medium;font-weight: bold;color: dodgerblue">简介：</span>
                 {{dishInfo.introduction}}
             </p>
         </div>
         <div style="width: 10%;height: 100%;display: flex;align-items: center;justify-content: center">
-            <el-button type="danger" circle icon="el-icon-delete" @click="delDish" v-if="this.$store.state.userInfo.userID===2"></el-button>
+            <el-button type="danger" circle icon="el-icon-delete" @click="delDish" v-if="this.$store.state.userInfo.userType==2"></el-button>
         </div>
     </div>
 </template>
@@ -56,7 +58,18 @@
                 this.$router.replace('detail')
             },
             delDish() {
-                JS.dishes.delDish(this,this.dishInfo.dishID)
+                this.$confirm('你确定删除该菜品吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    JS.dishes.delDish(this,this.dishInfo.dishID)
+                }).catch(() => {
+                    // this.$message({
+                    //     type: 'info',
+                    //     message: '已取消删除'
+                    // });
+                });
             }
         },
         computed: {

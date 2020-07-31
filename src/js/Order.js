@@ -52,7 +52,7 @@ export default {
     deleteOrder(vue,orderID){
         vue.$store.commit('deleteOrder',orderID);
     },
-    pay(vue,oid){
+    pay(vue){
         // order = {
         //     date: '07/20/19:54',
         //     dishName: vue.$store.state.dishInfo.dishName,
@@ -69,57 +69,48 @@ export default {
             spinner: 'el-icon-loading',
             background: 'rgba(0, 0, 0, 0.7)'
         });
-        let order = null
-        for (let i=0;i<vue.$store.state.orderInfo.length;i++) {
-            if (vue.$store.state.orderInfo[i].orderID === oid) {
-                order = vue.$store.state.orderInfo[i]
-                break;
-            }
-        }
         let data = {
-            price: order.price,
-            dishName: order.dishName,
-            orderID: order.orderID,
-            dishID: order.dishID,
-            PS: order.PS,
+            price: [],
+            orderID: [],
+            dishID: [],
+            PS: [],
+            number: [],
             userID: vue.$store.state.userInfo.userID,
-            number: order.number
+            cnt: 0
         }
-        console.log(data)
-        axios.post(vue.SERVICE_PATH+'/pay/codeurl',Qs.stringify(data))
+        for(let i=0;i<vue.$store.state.orderInfo.length;i++){
+            let order = vue.$store.state.orderInfo[i]
+            data.price.push(order.price)
+            data.dishID.push(order.dishID)
+            data.orderID.push(order.orderID)
+            data.PS.push(order.PS)
+            data.number.push(order.number)
+            data.cnt += 1
+        }
+        axios.post(vue.SERVICE_PATH+'/pay/codeurl',data)
             .then(res=>{
-                let data = res.data
-                if(data.status === 0){
-                    vue.$message.error('服务器错误！')
-                }else{
-                    console.log(res)
-                    vue.$store.commit('setPayCode',data.url)
-                    vue.loading.close()
-                    vue.timer = setInterval(()=>{
-                        axios.get(vue.SERVICE_PATH+'/pay/state',{params:{orderID:oid}})
-                            .then(res=>{
-                                if(res.data.status === 0){
-                                    vue.$message.error('服务器错误！')
-                                }else{
-                                    if(res.data.state === 0){
-                                        vue.$message.success('支付成功！')
-                                        clearInterval(vue.timer)
-                                        vue.$store.commit('deleteOrder',oid)
-                                        vue.payShow = false
-                                    }
-                                }
-                            })
-                            .catch(err=>{
-                                console.log(err)
-                                vue.$message.error('服务器错误！')
-                            })
-                    },2000)
-                    vue.payShow = true
-                }
-            })
-            .catch(err=>{
-                console.log(err)
+            console.log(res)
+            if(res.data.status === 0){
                 vue.$message.error('服务器错误！')
-            })
+            }else{
+                vue.$store.commit('setPayCode',res.data.url)
+                vue.loading.close()
+                vue.payShow = true
+                vue.timer = setInterval(()=>{
+                    axios.get(vue.SERVICE_PATH+'/pay/state',{params:{userID:vue.$store.state.userInfo.userID}})
+                        .then(res=>{
+                            if(res.data.status === 0){
+                                vue.$message.error('服务器错误！')
+                            }else if(res.data.cnt === 0){
+                                clearInterval(vue.timer)
+                                vue.$store.commit('clearOrder')
+                                vue.payShow = false
+                                vue.$router.go(0)
+                                vue.$message.success('下单成功！请耐心等待店家制作...')
+                            }
+                        })
+                },2000)
+            }
+        })
     }
 }

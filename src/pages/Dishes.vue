@@ -124,10 +124,10 @@
                 dialogShow: false,
                 formLabelWidth: '120px',
                 host_form: {
-                    hostName: '',
-                    phone: '',
-                    location: '',
-                    introduction: '',
+                    hostName: this.$store.state.hostInfo.hostName,
+                    phone: this.$store.state.hostInfo.phone,
+                    location: this.$store.state.hostInfo.location,
+                    introduction: this.$store.state.hostInfo.introduction,
                     picPath: '',
                 },
                 rules: {

@@ -6,7 +6,7 @@
                 <div slot="header">订单管理</div>
                 <ul class="list" :infinite-scroll-disabled="false" v-if="hostOrders.length>0">
                     <div v-for="item in hostOrders" class="list-item" :key="item.orderID">
-                        <el-card class="ordercard">
+                        <el-card style="width: 1070px;height: 200px;margin-bottom: 10px;margin-left: 20px" shadow="hover">
                             <order_item class="orderitem" :info="item"/>
                         </el-card>
                     </div>
@@ -70,10 +70,6 @@
         margin-top: 1%;
         justify-content: center;
         overflow: auto;
-    }
-    .ordercard{
-        width:1100px;
-        margin-top: 5px;
     }
     .orderitem{
         width:100%;

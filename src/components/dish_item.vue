@@ -29,7 +29,7 @@
             </p>
         </div>
         <div style="width: 10%;height: 100%;display: flex;align-items: center;justify-content: center">
-            <el-button type="danger" circle icon="el-icon-delete" @click="delDish"></el-button>
+            <el-button type="danger" circle icon="el-icon-delete" @click="delDish" v-if="this.$store.state.userInfo.userID===2"></el-button>
         </div>
     </div>
 </template>

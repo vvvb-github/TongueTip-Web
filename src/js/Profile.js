@@ -144,7 +144,7 @@ export default {
             .then(res=>{
                 let data = res.data
                 if(data.status == 0){
-                    vue.$message.error('服务器错误！')
+                    vue.$message.warning('手机号已被注册！')
                 }else{
                     if(form.userType == 2){
                         vue.$message.success('注册成功！请等待管理员审核')

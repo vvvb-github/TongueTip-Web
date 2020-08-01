@@ -7,7 +7,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state:{
         payCode: '',
-        imgUrl: 'http://64.64.228.191:8081/api/admin/image',
+        imgUrl: 'http://39.98.127.39:8081/api/admin/image',
         userInfo: {
             userID: 0,
             userName: '',

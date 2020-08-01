@@ -1,15 +1,4 @@
 # 舌尖
-## 开发日志
-### 7.15
-- 新建项目并搭建项目结构
-### 7.16
-- 以页面为单位分工进入UI设计阶段
-### 7.17
-- 进一步完善页面UI设计
-### 7.18
-- 完成页面UI设计，并完善页面内部功能逻辑
-### 7.19
-- 完成页面设计及功能，进行项目整合
 ## 项目结构
     -- src
         - assets
@@ -27,8 +16,5 @@
         App.vue 根组件，进行路由、Vuex等全局注册
         main.js 入口
         JS.js 全局数据与业务对象
-## 运行前请安装
-- npm install vue-router
-- npm install vuex
-- npm install element-ui
-- npm install vuex-persistedstate
+## 运行前请执行
+- npm install
